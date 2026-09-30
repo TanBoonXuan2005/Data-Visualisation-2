@@ -1,0 +1,103 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": "National Heritage places by jurisdiction",
+  "width": 520,
+  "height": 260,
+
+  "data": {
+    "url": "data/National_Heritage_List_Australia.csv"
+  },
+
+  "transform": [
+    {
+        "filter": "datum.STATUS  === 'Listed place'"
+    },
+    {
+        "aggregate": [
+            {
+                "op": "distinct",
+                "field": "PLACE_ID",
+                "as": "Listed Places"
+            }
+        ],   
+        "groupby": ["STATE"]
+    },
+    {
+        "calculate": "datum.STATE === 'EXT' ? 'External / offshore' : datum.STATE",
+        "as": "jurisdiction"
+    }
+  ],
+
+  "layer": [
+    
+    {
+        "mark": {
+        "type": "bar"
+        }
+    },
+    {
+        "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 4
+        },
+        "encoding": {
+            "text": {
+                "field": "Listed Places",
+                "type": "quantitative"
+            }
+        }
+    }
+  ],
+
+  "encoding": {
+    "y": {
+        "field": "jurisdiction",
+        "type": "nominal",
+        "sort": {
+            "field": "Listed Places",
+            "op": "sum",
+            "order": "descending"
+        },
+        "title": null
+    },
+
+    "x": {
+        "field": "Listed Places",
+        "type": "quantitative",
+        "title": "Number of unique listed places"
+    },
+
+    "tooltip": [
+        {
+            "field": "jurisdiction",
+            "type": "nominal",
+            "title": "Jurisdiction"
+        },
+
+        {
+            "field": "Listed Places",
+            "type": "quantitative",
+            "title": "Listed places"
+        }
+    ]
+  },
+
+  "config": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+    "title": {
+      "fontSize": 15,
+      "anchor": "start"
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "grid": false
+    },
+    "view": {
+      "stroke": null
+    }
+  }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Australian Heritage Sites</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.4.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
+</head>
+
+<body>
+
+  <main>
+
+    <h1>Australian Heritage Sites</h1>
+
+    <p>
+      Exploring where Australia's nationally significant heritage places are located,
+      what they represent, and why their preservation matters.
+    </p>
+
+    <section>
+      <h2>Where is Australia's heritage?</h2>
+
+      <div id="state-bar-chart"></div>
+    </section>
+
+  </main>
+
+  <script>
+    vegaEmbed(
+      "#state-bar-chart",
+      "js/chart04_state_bar.vg.json",
+      {
+        actions: false
+      }
+    );
+  </script>
+
+</body> 
+
+</html>
