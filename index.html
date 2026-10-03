@@ -27,8 +27,12 @@
 
     <section>
       <h2>Where is Australia's heritage?</h2>
-
       <div id="state-bar-chart"></div>
+    </section>
+
+    <section>
+      <h2>What makes these places significant?</h2>
+      <div id="world-heritage-isotype"></div>
     </section>
 
   </main>
@@ -36,10 +40,16 @@
   <script>
     vegaEmbed(
       "#state-bar-chart",
-      "js/chart04_state_bar.vg.json",
+      "js/chart03_state_bar.vg.json",
       {
         actions: false
       }
+    );
+
+    vegaEmbed(
+      "#world-heritage-isotype",
+      "js/chart04_world_heritage_isotype.vg.json",
+      { actions: false }
     );
   </script>
 

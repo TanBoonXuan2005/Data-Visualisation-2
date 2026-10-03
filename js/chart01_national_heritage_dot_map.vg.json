@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": "",
+
+  "width": 0,
+  "height": 0,
+
+  "data": {
+    "url": "data/national_heritage_sites.csv"
+  },
+
+  "transform": [
+    
+  ],
+
+  "encoding": {
+
+  }
+}

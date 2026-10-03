@@ -1,0 +1,155 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": {
+    "text": "Australia's World Heritage by category",
+    "subtitle": "Each symbol represents one of Australia's 21 World Heritage properties."
+  },
+
+  "width": 520,
+  "height": 180,
+
+  "data": {
+    "url": "data/world_heritage_australia.csv"
+  },
+
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "row_number",
+          "as": "site_number"
+        }
+      ],
+      "groupby": ["category"]
+    },
+
+    {
+      "joinaggregate": [
+        {
+          "op": "count",
+          "as": "category_count"
+        }
+      ],
+      "groupby": ["category"]
+    },
+
+    {
+      "calculate": "datum.category === 'Natural' ? '🌿' : datum.category === 'Cultural' ? '🏛' : '◆'",
+      "as": "icon"
+    }
+  ],
+
+  "encoding": {
+    "x": {
+      "field": "site_number",
+      "type": "ordinal",
+      "axis": null
+    },
+
+    "y": {
+      "field": "category",
+      "type": "nominal",
+      "title": null,
+      "sort": [
+        "Natural",
+        "Cultural",
+        "Mixed"
+      ],
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 8
+      }
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 24
+      },
+
+      "encoding": {
+        "text": {
+          "field": "icon",
+          "type": "nominal"
+        },
+
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "legend": null
+        },
+
+        "tooltip": [
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "World Heritage property"
+          },
+          {
+            "field": "category",
+            "type": "nominal",
+            "title": "Category"
+          },
+          {
+            "field": "year",
+            "type": "quantitative",
+            "title": "Inscribed",
+            "format": "d"
+          }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.site_number === datum.category_count"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 22,
+        "fontSize": 13,
+        "fontWeight": "bold"
+      },
+
+      "encoding": {
+        "text": {
+          "field": "category_count",
+          "type": "quantitative",
+          "format": "d"
+        },
+
+        "color": {
+          "value": "#333333"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+
+    "title": {
+      "fontSize": 15,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    },
+
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12
+    },
+
+    "view": {
+      "stroke": null
+    }
+  }
+}
