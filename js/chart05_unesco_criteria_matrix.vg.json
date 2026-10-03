@@ -1,20 +1,211 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
-  "title": "",
+  "title": {
+    "text": "What makes Australia's World Heritage properties significant?",
+    "subtitle": "Filled cells show the UNESCO criteria used for each property. Criteria i-vi are cultural, vii-x are natural."
+  },
 
-  "width": 0,
-  "height": 0,
+  "width": 500,
+  "height": 500,
 
   "data": {
-    "url": "data/"
+    "url": "data/world_heritage_australia.csv"
   },
 
   "transform": [
-    
+    {
+      "calculate": "datum.category === 'Cultural' ? 1 : datum.category === 'Mixed' ? 2 : 3",
+      "as": "category_order"
+    },
+    {
+      "calculate": "datum.category_order * 10000 - datum.year",
+      "as": "sort_key"
+    },
+
+    {
+      "calculate": "indexof(datum.criteria, '(i)') >= 0 ? 1 : 0",
+      "as": "i"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(ii)') >= 0 ? 1 : 0",
+      "as": "ii"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(iii)') >= 0 ? 1 : 0",
+      "as": "iii"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(iv)') >= 0 ? 1 : 0",
+      "as": "iv"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(v)') >= 0 ? 1 : 0",
+      "as": "v"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(vi)') >= 0 ? 1 : 0",
+      "as": "vi"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(vii)') >= 0 ? 1 : 0",
+      "as": "vii"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(viii)') >= 0 ? 1 : 0",
+      "as": "viii"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(ix)') >= 0 ? 1 : 0",
+      "as": "ix"
+    },
+    {
+      "calculate": "indexof(datum.criteria, '(x)') >= 0 ? 1 : 0",
+      "as": "x"
+    },
+
+    {
+      "fold": [
+        "i",
+        "ii",
+        "iii",
+        "iv",
+        "v",
+        "vi",
+        "vii",
+        "viii",
+        "ix",
+        "x"
+      ],
+      "as": ["criterion", "met"]
+    }
   ],
 
   "encoding": {
+    "x": {
+      "field": "criterion",
+      "type": "ordinal",
+      "sort": [
+        "i",
+        "ii",
+        "iii",
+        "iv",
+        "v",
+        "vi",
+        "vii",
+        "viii",
+        "ix",
+        "x"
+      ],
+      "title": "UNESCO criterion",
+      "axis": {
+        "orient": "top",
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "name",
+      "type": "ordinal",
+      "sort": {
+        "field": "sort_key", 
+        "op": "min",
+        "order": "ascending"
+      },
+      "title": null,
+      "axis": {
+        "labelLimit": 280
+      }
+    }
+  },
 
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "fill": "#f2f2f2",
+        "stroke": "white",
+        "strokeWidth": 1
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.met === 1"
+        }
+      ],
+
+      "mark": {
+        "type": "rect",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+
+      "encoding": {
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "title": "Property category",
+          "scale": {
+            "domain": [
+              "Cultural", 
+              "Natural", 
+              "Mixed"
+            ],
+            "range": [
+              "#1f77b4", 
+              "#2ca02c", 
+              "#ff7f0e"
+            ]
+          }
+        },
+
+        "tooltip": [
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "World Heritage Property"
+          },
+          {
+            "field": "category",
+            "type": "nominal",
+            "title": "Category"
+          },
+          {
+            "field": "criterion",
+            "type": "nominal",
+            "title": "UNESCO criterion"
+          },
+          {
+            "field": "year",
+            "type": "quantitative",
+            "title": "Inscribed",
+            "format": "d"
+          }
+        ]
+      }
+    }
+  ],
+
+  "config": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    },
+
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "grid": false,
+      "domain": false,
+      "ticks": false
+    },
+
+    "view": {
+      "stroke": null
+    }
   }
 }
