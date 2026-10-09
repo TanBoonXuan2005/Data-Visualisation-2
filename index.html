@@ -65,6 +65,27 @@
       </p>
     </section>
 
+    <section>
+      <h2>How do people experience Australia's World Heritage?</h2>
+
+      <div class="chart-panel">
+        <div id="world-heritage-symbol-map"></div>
+      </div>
+
+      <p class="chart-insight">
+        Australia's World Heritage properties vary greatly in listed area. The Great
+        Barrier Reef dominates by size, while culturally significant places such as
+        the Sydney Opera House occupy much smaller footprints.
+      </p>
+
+      <p class="chart-source">
+        Source: UNESCO World Heritage Centre.
+        Markers represent UNESCO reference coordinates and listed area.
+        Heard and McDonald Islands and Macquarie Island are
+        omitted from this mainland-focused view.
+      </p>
+    </section>
+
   </main>
 
   <script>
@@ -91,6 +112,12 @@
     vegaEmbed(
       "#world-heritage-event-timeline",
       "js/chart06_world_heritage_event_timeline.vg.json",
+      { actions: false }
+    )
+
+    vegaEmbed(
+      "#world-heritage-symbol-map",
+      "js/chart07_world_heritage_symbol_map.vg.json",
       { actions: false }
     )
   </script>

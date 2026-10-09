@@ -1,0 +1,187 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": {
+    "text": "How large are Australia's World Heritage properties?",
+    "subtitle": "Symbol sizes are adjusted for visibility; colour shows heritage category. Hover for exact area."
+  },
+
+  "width": 600,
+  "height": 430,
+
+  "projection": {
+    "type": "mercator"
+  },
+
+  "layer": [
+    {
+      "data": {
+        "url": "data/australia_states.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "australia_states_2026"
+        }
+      },
+
+      "mark": {
+        "type": "geoshape",
+        "fill": "#eeeeee",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      }
+    },
+
+    {
+      "data": {
+        "url": "data/world_heritage_australia.csv"
+      },
+
+      "transform": [
+        {
+          "filter": "datum.name !== 'Heard and McDonald Islands' && datum.name !== 'Macquarie Island'"
+        }
+      ],
+
+      "mark": {
+        "type": "circle",
+        "stroke": "white",
+        "strokeWidth": 0.8,
+        "opacity": 0.75
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+
+        "size": {
+          "field": "area_ha",
+          "type": "quantitative",
+          "title": "Listed area (ha)",
+          "scale": {
+            "type": "sqrt",
+            "zero": false,
+            "range": [40, 1400]
+          },
+          "legend": {
+            "title": "Listed area (ha)",
+            "values": [10, 10000, 1000000, 30000000],
+            "labelExpr": "datum.value === 10 ? '10 ha' : datum.value === 10000 ? '10k ha' : datum.value === 1000000 ? '1M ha' : '30M ha'"
+          }
+        },
+
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "title": "Heritage category",
+          "scale": {
+            "domain": [
+              "Cultural",
+              "Natural",
+              "Mixed"
+            ],
+            "range": [
+              "#1f77b4",
+              "#2ca02c",
+              "#ff7f0e"
+            ]
+          }
+        },
+
+        "tooltip": [
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "World Heritage property"
+          },
+          {
+            "field": "category",
+            "type": "nominal",
+            "title": "Category"
+          },
+          {
+            "field": "year",
+            "type": "quantitative",
+            "title": "Inscribed",
+            "format": "d"
+          },
+          {
+            "field": "area_ha",
+            "type": "quantitative",
+            "title": "Listed area (ha)",
+            "format": ",.0f"
+          }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "url": "data/world_heritage_australia.csv"
+      },
+
+      "transform": [
+        {
+          "filter": "toNumber(datum.unesco_id) === 154 || toNumber(datum.unesco_id) === 147 || toNumber(datum.unesco_id) === 447"
+        },
+        {
+          "calculate": "toNumber(datum.unesco_id) === 154 ? 'Great Barrier Reef' : toNumber(datum.unesco_id) === 147 ? 'Kakadu' : 'Uluṟu–Kata Tjuṯa'",
+          "as": "map_label"
+        }
+      ],
+
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 27,
+        "dy": -10,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#263238"
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+
+        "text": {
+          "field": "map_label",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    },
+
+    "axis": {
+      "labelFontSize": 12
+    },
+
+    "view": {
+      "stroke": null
+    }
+  }
+}
