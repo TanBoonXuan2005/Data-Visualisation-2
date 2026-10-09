@@ -20,19 +20,49 @@
 
     <h1>Australian Heritage Sites</h1>
 
-    <p>
+    <p class="introduction">
       Exploring where Australia's nationally significant heritage places are located,
       what they represent, and why their preservation matters.
     </p>
 
     <section>
       <h2>Where is Australia's heritage?</h2>
-      <div id="state-bar-chart"></div>
+      <div class="chart-panel">
+        <div id="state-bar-chart"></div>
+      </div>
+
+      <p class="chart-source">
+        Note: Heritage places spanning multiple jurisdictions
+        are counted once in each relevant jurisdiction.
+      </p>
     </section>
 
-    <section>
+    <section class="heritage-story">
       <h2>What makes these places significant?</h2>
-      <div id="world-heritage-isotype"></div>
+      <div class="chart-panel">
+        <div id="world-heritage-isotype"></div>
+      </div>
+
+      <div class="chart-panel">
+        <div id="unesco-criteria-matrix"></div>
+      </div>
+
+      <div class="chart-panel">
+        <div id="world-heritage-event-timeline"></div>
+      </div>
+
+      <p class="chart-insight">
+        World Heritage recognition can evolve after initial inscription.
+        Kakadu National Park was extended in 1987 and 1992, while
+        Uluṟu-Kata Tjuṯa National Park received recognition under
+        cultural criteria in 1994.
+      </p>
+
+      <p class="chart-source">
+        Source: UNESCO World Heritage Centre.
+        Additional dates reflect the selected UNESCO dataset fields
+        and do not represent a complete history of all decisions.
+      </p>
     </section>
 
   </main>
@@ -51,6 +81,18 @@
       "js/chart04_world_heritage_isotype.vg.json",
       { actions: false }
     );
+
+    vegaEmbed(
+      "#unesco-criteria-matrix",
+      "js/chart05_unesco_criteria_matrix.vg.json",
+      { actions: false }
+    );
+
+    vegaEmbed(
+      "#world-heritage-event-timeline",
+      "js/chart06_world_heritage_event_timeline.vg.json",
+      { actions: false }
+    )
   </script>
 
 </body> 

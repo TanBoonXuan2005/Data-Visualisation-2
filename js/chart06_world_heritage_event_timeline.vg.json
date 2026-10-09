@@ -1,20 +1,206 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
-  "title": "",
-
-  "width": 0,
-  "height": 0,
-
-  "data": {
-    "url": "data/"
+  "title": {
+    "text": "How has Australia's World Heritage recognition evolved?",
+    "subtitle": "Circles show inscription years; diamonds show additional dates recorded in UNESCO's World Heritage dataset."
   },
 
-  "transform": [
-    
-  ],
+  "width": 650,
+  "height": 570,
+
+  "data": {
+    "url": "data/world_heritage_australia.csv"
+  },
 
   "encoding": {
+    "y": {
+      "field": "name",
+      "type": "nominal",
+      "title": null,
+      "sort": {
+        "field": "year",
+        "op": "min",
+        "order": "ascending"
+      },
+      "axis": {
+        "labelLimit": 290,
+        "labelFontSize": 12,
+        "domain": false,
+        "ticks": false
+      }
+    }
+  },
 
+  "layer": [
+    {
+      "transform": [
+        {
+          "calculate": "split(toString(datum.secondary_dates), ',')",
+          "as": "secondary_years"
+        },
+        {
+          "flatten": ["secondary_years"]
+        },
+        {
+          "calculate": "toNumber(datum.secondary_years)",
+          "as": "event_year"
+        },
+        {
+          "filter": "isValid(datum.event_year) && datum.event_year >= 1980 && datum.event_year != datum.year"
+        }
+      ],
+
+      "mark": {
+        "type": "rule",
+        "color": "#9ca3af",
+        "strokeWidth": 2,
+        "opacity": 0.5
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "scale": {
+            "domain": [1980, 2026]
+          }
+        },
+        "x2": {
+          "field": "event_year"
+        }
+      }
+    },
+
+    {
+      "mark": {
+        "type": "point",
+        "shape": "circle",
+        "filled": true,
+        "size": 145
+      },
+
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "title": "Year",
+          "scale": {
+            "domain": [1980, 2026],
+            "nice": false
+          },
+          "axis": {
+            "format": "d",
+            "tickCount": 10,
+            "grid": true
+          }
+        },
+
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "title": "World Heritage category",
+          "scale": {
+            "domain": ["Cultural", "Natural", "Mixed"],
+            "range": ["#1f77b4", "#2ca02c", "#ff7f0e"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "title": null,
+            "labelFontSize": 12,
+            "symbolSize": 100
+          }
+        },
+
+        "tooltip": [
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "World Heritage property"
+          },
+          {
+            "field": "year",
+            "type": "quantitative",
+            "title": "Inscription year",
+            "format": "d"
+          }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "calculate": "split(toString(datum.secondary_dates), ',')",
+          "as": "secondary_years"
+        },
+        {
+          "flatten": ["secondary_years"]
+        },
+        {
+          "calculate": "toNumber(datum.secondary_years)",
+          "as": "event_year"
+        },
+        {
+          "filter": "isValid(datum.event_year) && datum.event_year >= 1980 && datum.event_year != datum.year"
+        }
+      ],
+
+      "mark": {
+        "type": "point",
+        "shape": "diamond",
+        "filled": true,
+        "size": 160,
+        "stroke": "white",
+        "strokeWidth": 0.8
+      },
+
+      "encoding": {
+        "x": {
+          "field": "event_year",
+          "type": "quantitative"
+        },
+
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "legend": null
+        },
+
+        "tooltip": [
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "World Heritage property"
+          },
+          {
+            "field": "event_year",
+            "type": "quantitative",
+            "title": "Additional UNESCO date",
+            "format": "d"
+          }
+        ]
+      }
+    }
+  ],
+
+  "config": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    },
+
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
+    },
+
+    "view": {
+      "stroke": null
+    }
   }
 }
