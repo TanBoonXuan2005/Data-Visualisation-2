@@ -113,7 +113,8 @@
       },
       "title": null,
       "axis": {
-        "labelLimit": 280
+        "labelLimit": 350,
+        "labelFontSize": 12
       }
     }
   },
