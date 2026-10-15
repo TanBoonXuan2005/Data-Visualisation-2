@@ -59,13 +59,13 @@ h2 {
 
 .introduction,
 .chart-insight {
-    max-width: 54ch;
     font-size: 18px;
     line-height: 1.6;
     color: #374151;
 }
 
 .introduction {
+    max-width: 100%;
     margin: 0;
 }
 
@@ -74,7 +74,7 @@ h2 {
 }
 
 .chart-source {
-    max-width: 80ch;
+    max-width: 100%;
     margin: 12px 0 0;
     font-size: 13px;
     line-height: 1.5;
@@ -110,6 +110,10 @@ footer h2 {
 .byline {
     font-size: 14px;
     color: #374151;
+}
+
+.chart-panel-visitors {
+    margin-top: 52px;
 }
 
 @media (max-width: 900px) {

@@ -7,6 +7,9 @@
 
   <title>Australian Heritage Sites</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
@@ -21,8 +24,11 @@
     <h1>Australian Heritage Sites</h1>
 
     <p class="introduction">
-      Exploring where Australia's nationally significant heritage places are located,
-      what they represent, and why their preservation matters.
+      Australia's heritage spans natural landscapes, historic places and
+      Indigenous culture. This visualisation examines datasets covering
+      126 National Heritage places and 21 Australian World Heritage
+      properties. Explore where they are, what makes them significant
+      and how people experience them.
     </p>
 
     <section>
@@ -35,10 +41,18 @@
           </div>
 
           <p class="chart-insight">
-            Australia's National Heritage places reflect a diverse
-            range of historic, natural and Indigenous significance.
-            The map highlights their geographic distribution
-            across Australia.
+            Of the 126 National Heritage places in the dataset, 119 are
+            shown on this map. Historic places form the largest group,
+            with 65 plotted sites, compared with 34 natural and
+            20 Indigenous places.
+          </p>
+
+          <p class="chart-source">
+            Source: Australian Government, National Heritage List
+            Spatial Database. Each point represents one listed place,
+            rather than its complete geographic boundary.
+            Remote and offshore locations may fall outside
+            the mainland-focused map view.
           </p>
         </div>
 
@@ -48,9 +62,10 @@
           </div>
 
           <p class="chart-insight">
-            Comparing heritage places per 100,000 km² of land
-            highlights differences in their relative concentration
-            across Australian states and territories.
+            The ACT has the highest heritage density, with approximately
+            212 listed places per 100,000 km². Tasmania has around 19
+            and Victoria around 13. The ACT's small land area
+            contributes to its exceptionally high density.
           </p>
 
           <p class="chart-source">
@@ -60,16 +75,7 @@
             land area.
           </p>
         </div>
-
       </div>
-
-      <p class="chart-source">
-        Source: Australian Government, National Heritage List
-        Spatial Database. Each point represents one listed place,
-        rather than its complete geographic boundary.
-        Remote and offshore locations may fall outside
-        the mainland-focused map view.
-      </p>
       
       <div class="chart-row">
         <div class="chart-panel">
@@ -162,6 +168,33 @@
         Heard and McDonald Islands and Macquarie Island are
         omitted from this mainland-focused view.
       </p>
+
+      <p class="chart-insight">
+        Among these World Heritage properties, Kakadu and
+        Uluṟu-Kata Tjuṯa attract visitors from across the world.
+        Their annual visitor numbers reveal different recovery patterns.
+      </p>
+
+      <div class="chart-panel chart-panel-visitors">
+        <div id="kakadu-uluru-visitors-line"></div>
+      </div>
+
+      <p class="chart-insight">
+        The parks followed different recovery paths. In 2020–21,
+        Kakadu received 173,584 visitors while Uluṟu received
+        122,523. From 2022–23 to 2024–25, Uluṟu's visitation
+        increased by 10.6%, while Kakadu's declined by 8.0%.
+        Uluṟu's 2018–19 total of 395,338 was itself 20%
+        higher than the previous year.
+      </p>
+
+      <p class="chart-source">
+        Source: Director of National Parks annual reports and
+        DCCEEW FOI 80520. Data extracted and standardised by
+        the author. Financial years run from July to June.
+        Visitor-counting methods differ between the two parks,
+        so comparisons focus on trends within each park.
+      </p>
     </section>
 
   <footer>
@@ -175,6 +208,7 @@
           fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public
         </a>
       </li>
+
       <li>
         World Heritage properties: UNESCO World Heritage Centre, Australia.
         <a href="https://whc.unesco.org/en/statesparties/au">
@@ -190,6 +224,20 @@
         </a>
       </li>
 
+      <li>
+        National park visitor data:
+        Director of National Parks Annual Reports
+        <a href="https://www.dcceew.gov.au/parks-heritage/national-parks/parks-australia/publications/annual-report-2018-19-director-national-parks">2018–19</a>,
+        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2020-21.pdf">2020–21</a>,
+        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2022-23.pdf">2022–23</a>,
+        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2023-24.pdf">2023–24</a> and
+        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2024-25.pdf">2024–25</a>.
+        <a href="https://www.dcceew.gov.au/sites/default/files/documents/80520.pdf">DCCEEW FOI 80520</a>.
+        Events:
+        <a href="https://parksaustralia.gov.au/news/parks-australia-announces-temporary-closures/">Parks Australia temporary closures (March 2020)</a>,
+        <a href="https://uluru.gov.au/discover/history/uluru-climb-closure/">Uluṟu climb closure</a> and
+        <a href="https://uluru.gov.au/news/staged-re-opening-uluru-kata-tjuta-national-park/">2020 park reopening</a>.
+      </li>
     </ul>
 
     <p class="byline">Created by Tan Boon Xuan, October 2026.</p>
@@ -243,6 +291,12 @@
     vegaEmbed(
       "#world-heritage-symbol-map",
       "js/chart07_world_heritage_symbol_map.vg.json",
+      { actions: false }
+    );
+
+    vegaEmbed(
+      "#kakadu-uluru-visitors-line",
+      "js/chart08_kakadu_uluru_visitors_line.vg.json",
       { actions: false }
     );
   </script>

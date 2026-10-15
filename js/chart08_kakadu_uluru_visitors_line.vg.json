@@ -1,20 +1,153 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
-  "title": "",
+  "title": {
+    "text": "Kakadu bounced back first, but Uluṟu is now the one growing",
+    "subtitle": [
+      "Visitors per financial year (July to June). The parks count visitors differently,",
+      "so compare each park's trend rather than the gap between them. Hover for exact totals."
+    ]
+  },
 
-  "width": 0,
-  "height": 0,
+  "width": "container",
+  "height": 380,
+  "autosize": {"type": "fit", "contains": "padding"},
 
   "data": {
-    "url": "data/"
+    "url": "data/visitors_kakadu_uluru.csv"
   },
 
   "transform": [
-    
+    {
+      "calculate": "isValid(datum.year_start) && datum.year_start !== '' ? toNumber(datum.year_start) : toNumber(substring(datum.financial_year, 0, 4))",
+      "as": "start"
+    },
+    {
+      "calculate": "datum.start + '-' + substring(toString(datum.start + 1), 2, 4)",
+      "as": "year_label"
+    },
+    {"calculate": "toNumber(replace(toString(datum.Kakadu), /,/g, ''))", "as": "Kakadu_visitors"},
+    {"calculate": "toNumber(replace(toString(datum.Uluru), /,/g, ''))", "as": "Uluru_visitors"}
   ],
 
   "encoding": {
+    "x": {
+      "field": "year_label",
+      "type": "ordinal",
+      "title": null,
+      "sort": {"field": "start", "order": "ascending"},
+      "axis": {"labelAngle": 0, "ticks": false, "domainColor": "#c3c2b7"}
+    }
+  },
 
+  "layer": [
+    {
+      "transform": [
+        {"fold": ["Kakadu_visitors", "Uluru_visitors"], "as": ["series", "visitors"]},
+        {"calculate": "datum.series === 'Kakadu_visitors' ? 'Kakadu' : 'Uluṟu-Kata Tjuṯa'", "as": "park"},
+        {"joinaggregate": [{"op": "max", "field": "start", "as": "latest_start"}]}
+      ],
+
+      "encoding": {
+        "y": {
+          "field": "visitors",
+          "type": "quantitative",
+          "title": "Visitors",
+          "scale": {"zero": true, "domain": [0, 460000]},
+          "axis": {"labelExpr": "datum.value === 0 ? '0' : (datum.value / 1000) + 'k'", "gridColor": "#eeedea", "domain": false, "ticks": false, "values": [0, 100000, 200000, 300000, 400000]}
+        },
+        "color": {
+          "field": "park",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": ["Kakadu", "Uluṟu-Kata Tjuṯa"],
+            "range": ["#6250d6", "#d55181"]
+          },
+          "legend": {"orient": "top", "direction": "horizontal", "symbolType": "stroke", "symbolStrokeWidth": 3}
+        }
+      },
+
+      "layer": [
+        {
+          "mark": {"type": "line", "strokeWidth": 2.5}
+        },
+
+        {
+          "mark": {"type": "point", "filled": true, "size": 60, "stroke": "#ffffff", "strokeWidth": 1.5, "opacity": 1}
+        },
+
+        {
+          "transform": [{"filter": "datum.start === datum.latest_start"}],
+          "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 10, "fontSize": 12, "color": "#1f2a30"},
+          "encoding": {
+            "text": {"field": "visitors", "type": "quantitative", "format": ","},
+            "color": {"value": "#1f2a30"}
+          }
+        },
+
+        {
+          "transform": [
+            {"filter": "datum.park === 'Uluṟu-Kata Tjuṯa' && datum.start === 2018"},
+            {"calculate": "'Highest year shown, up 20% on the year before'", "as": "note"}
+          ],
+          "mark": {"type": "text", "align": "left", "baseline": "bottom", "dx": 8, "dy": -8, "fontSize": 12, "color": "#374151"},
+          "encoding": {
+            "text": {"field": "note"},
+            "color": {"value": "#374151"}
+          }
+        },
+
+        {
+          "transform": [
+            {"filter": "datum.park === 'Uluṟu-Kata Tjuṯa' && datum.start === 2019"},
+            {"calculate": "'Uluṟu climb closed on 26 Oct 2019'", "as": "note"}
+          ],
+          "mark": {"type": "text", "align": "left", "baseline": "bottom", "dx": 8, "dy": -8, "fontSize": 12, "color": "#374151"},
+          "encoding": {
+            "text": {"field": "note"},
+            "color": {"value": "#374151"}
+          }
+        },
+
+        {
+          "transform": [
+            {"filter": "datum.park === 'Kakadu' && datum.start === 2019"},
+            {"calculate": "['COVID-19: both parks closed', 'from 26 Mar to 19 Jun 2020']", "as": "note"}
+          ],
+          "mark": {"type": "text", "align": "center", "baseline": "top", "dy": 14, "fontSize": 12, "lineHeight": 16, "color": "#374151"},
+          "encoding": {
+            "text": {"field": "note"},
+            "color": {"value": "#374151"}
+          }
+        }
+      ]
+    },
+
+    {
+      "params": [
+        {
+          "name": "hover_year",
+          "select": {"type": "point", "fields": ["year_label"], "nearest": true, "on": "mouseover", "clear": "mouseout"}
+        }
+      ],
+      "mark": {"type": "rule", "color": "#898781", "strokeWidth": 1},
+      "encoding": {
+        "opacity": {"condition": {"param": "hover_year", "value": 1, "empty": false}, "value": 0},
+        "tooltip": [
+          {"field": "year_label", "type": "ordinal", "title": "Financial year"},
+          {"field": "Kakadu_visitors", "type": "quantitative", "title": "Kakadu", "format": ","},
+          {"field": "Uluru_visitors", "type": "quantitative", "title": "Uluṟu-Kata Tjuṯa", "format": ","}
+        ]
+      }
+    }
+  ],
+
+  "config": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+    "title": {"fontSize": 16, "subtitleFontSize": 12, "anchor": "start"},
+    "axis": {"labelFontSize": 12, "titleFontSize": 12, "labelColor": "#52514e", "titleColor": "#52514e"},
+    "legend": {"labelFontSize": 12},
+    "view": {"stroke": null}
   }
 }
