@@ -1,20 +1,135 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 
-  "title": "",
-
-  "width": 0,
-  "height": 0,
-
-  "data": {
-    "url": "data/national_heritage_sites.csv"
+  "title": {
+    "text": "Where are Australia's National Heritage places?",
+    "subtitle": "Each dot represents one listed place. Click a legend category to highlight its distribution."  
   },
 
-  "transform": [
-    
-  ],
+  "width": "container",
+  "height": 430,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
 
-  "encoding": {
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [-18, -36],
+    "rotate": [-134, 0]
+  },
 
-  }
+  "layer": [
+    {
+      "data": {
+        "url": "data/australia_states.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "australia_states_2026"
+        }
+      },
+
+      "mark": {
+        "type": "geoshape",
+        "fill": "#eeeeee",
+        "stroke": "white",
+        "strokeWidth": 1
+      }
+    },
+
+    {
+      "data": {
+        "url": "data/national_heritage_places.csv"
+      },
+
+      "params": [
+        {
+          "name": "heritageSelection",
+          "select": {
+            "type": "point",
+            "fields": ["CLASS"]
+          },
+          "bind": "legend"
+        }
+      ],
+      
+      "transform": [
+        {
+          "filter": "indexof([106080, 105713, 105707, 105962, 106167, 106065, 105698], toNumber(datum.PLACE_ID)) === -1"
+        }
+      ],
+
+
+      "mark": {
+        "type": "circle",
+        "size": 40,
+        "stroke": "white",
+        "strokeWidth": 0.8
+      },
+
+      "encoding": {
+        "longitude": {
+          "field": "X",
+          "type": "quantitative"
+        },
+
+        "latitude": {
+          "field": "Y",
+          "type": "quantitative"
+        },
+
+        "color": {
+          "field": "CLASS",
+          "type": "nominal",
+          "title": "Heritage class",
+          "scale": {
+            "domain": [
+              "Historic",
+              "Natural",
+              "Indigenous"
+            ],
+            "range": [
+              "#1f77b4",
+              "#2ca02c",
+              "#ff7f0e"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "title": "Heritage class",
+            "symbolType": "circle",
+            "symbolSize": 100,
+            "labelFontSize": 12
+          }
+        },
+
+        "tooltip": [
+          {
+            "field": "NAME",
+            "type": "nominal",
+            "title": "Heritage place"
+          },
+          {
+            "field": "CLASS",
+            "type": "nominal",
+            "title": "Heritage class"
+          },
+          {
+            "field": "PLACE_ID",
+            "type": "nominal",
+            "title": "Place ID"
+          }
+        ],
+
+        "opacity": {
+          "condition": {
+            "param": "heritageSelection",
+            "value": 0.9
+          },
+          "value": 0.15
+        }
+      }
+    }
+  ]
 }

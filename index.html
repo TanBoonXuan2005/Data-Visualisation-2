@@ -27,35 +27,113 @@
 
     <section>
       <h2>Where is Australia's heritage?</h2>
-      <div class="chart-panel">
-        <div id="state-bar-chart"></div>
+
+      <div class="map-pair">
+        <div>
+          <div class="chart-panel">
+            <div id="national-heritage-dot-map"></div>
+          </div>
+
+          <p class="chart-insight">
+            Australia's National Heritage places reflect a diverse
+            range of historic, natural and Indigenous significance.
+            The map highlights their geographic distribution
+            across Australia.
+          </p>
+        </div>
+
+        <div>
+          <div class="chart-panel">
+            <div id="heritage-density-map"></div>
+          </div>
+
+          <p class="chart-insight">
+            Comparing heritage places per 100,000 km² of land
+            highlights differences in their relative concentration
+            across Australian states and territories.
+          </p>
+
+          <p class="chart-source">
+            Source: Australian Government, National Heritage List
+            Spatial Database. Density is calculated using distinct
+            listed places per 100,000 km² of state or territory
+            land area.
+          </p>
+        </div>
+
       </div>
 
       <p class="chart-source">
-        Note: Heritage places spanning multiple jurisdictions
-        are counted once in each relevant jurisdiction.
+        Source: Australian Government, National Heritage List
+        Spatial Database. Each point represents one listed place,
+        rather than its complete geographic boundary.
+        Remote and offshore locations may fall outside
+        the mainland-focused map view.
       </p>
+      
+      <div class="chart-row">
+        <div class="chart-panel">
+          <div id="state-bar-chart"></div>
+        </div>
+
+        <div>
+          <p class="chart-insight">
+            New South Wales and Victoria lead with 30 places each.
+            Together they hold 59 of the 126 listed places, close to half.
+          </p>
+
+          <p class="chart-source">
+            Places that span more than one state or territory are counted
+            in each, so the bars add up to 130 rather than 126.
+          </p>
+        </div>
+      </div>
+
     </section>
 
     <section class="heritage-story">
       <h2>What makes these places significant?</h2>
-      <div class="chart-panel">
-        <div id="world-heritage-isotype"></div>
+      <div class="chart-row">
+        <div class="chart-panel">
+          <div id="world-heritage-isotype"></div>
+        </div>
+
+        <p class="chart-insight">
+          More than half of Australia's World Heritage properties (12 of 21)
+          are listed for their natural values alone. Only five are purely
+          cultural, and four are recognised for both.
+        </p>
       </div>
 
       <div class="chart-panel">
         <div id="unesco-criteria-matrix"></div>
       </div>
 
+      <p class="chart-insight">
+        Earth's history (criterion viii) is the most common reason for
+        listing, applying to 12 of the 21 properties. No cultural criterion
+        applies to more than four.
+      </p>
+
+      <p class="chart-source">
+        Criteria i to vi are cultural: human creativity, exchange of ideas,
+        cultural traditions, buildings and landscapes, traditional land use,
+        and links to beliefs or events. Criteria vii to x are natural:
+        exceptional beauty, Earth's history, living ecosystems and
+        biodiversity.
+      </p>
+
       <div class="chart-panel">
         <div id="world-heritage-event-timeline"></div>
       </div>
 
       <p class="chart-insight">
-        World Heritage recognition can evolve after initial inscription.
-        Kakadu National Park was extended in 1987 and 1992, while
-        Uluṟu-Kata Tjuṯa National Park received recognition under
-        cultural criteria in 1994.
+        From 1981 to 2003, every Australian World Heritage property was
+        natural or mixed. Five of the six inscribed since 2004 are cultural,
+        including two Aboriginal cultural landscapes, Budj Bim (2019) and
+        Murujuga (2025). Recognition can also change after inscription:
+        Kakadu was extended in 1987 and 1992, and Uluṟu-Kata Tjuṯa was
+        recognised for its cultural values in 1994.
       </p>
 
       <p class="chart-source">
@@ -73,9 +151,9 @@
       </div>
 
       <p class="chart-insight">
-        Australia's World Heritage properties vary greatly in listed area. The Great
-        Barrier Reef dominates by size, while culturally significant places such as
-        the Sydney Opera House occupy much smaller footprints.
+        The Great Barrier Reef covers 34.9 million hectares, about three
+        times the other 20 properties combined. The Sydney Opera House,
+        at 5.8 hectares, is the smallest.
       </p>
 
       <p class="chart-source">
@@ -86,9 +164,56 @@
       </p>
     </section>
 
+  <footer>
+    <h2>Sources</h2>
+
+    <ul class="sources">
+      <li>
+        National Heritage places: Australian Government, National Heritage
+        List Spatial Database (NHL), public release.
+        <a href="https://fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public/about">
+          fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public
+        </a>
+      </li>
+      <li>
+        World Heritage properties: UNESCO World Heritage Centre, Australia.
+        <a href="https://whc.unesco.org/en/statesparties/au">
+          whc.unesco.org/en/statesparties/au
+        </a>
+      </li>
+
+      <li>
+        State and territory boundaries: Australian Bureau of Statistics,
+        ASGS Edition 4 digital boundary files.
+        <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/digital-boundary-files">
+          abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031
+        </a>
+      </li>
+
+    </ul>
+
+    <p class="byline">Created by Tan Boon Xuan, October 2026.</p>
+  </footer>
+
   </main>
 
   <script>
+    vegaEmbed(
+      "#national-heritage-dot-map",
+      "js/chart01_national_heritage_dot_map.vg.json",
+      {
+        actions: false
+      }
+    );
+
+    vegaEmbed(
+      "#heritage-density-map",
+      "js/chart02_heritage_density_choropleth.vg.json",
+      {
+        actions: false
+      }
+    );
+
     vegaEmbed(
       "#state-bar-chart",
       "js/chart03_state_bar.vg.json",
@@ -113,13 +238,13 @@
       "#world-heritage-event-timeline",
       "js/chart06_world_heritage_event_timeline.vg.json",
       { actions: false }
-    )
+    );
 
     vegaEmbed(
       "#world-heritage-symbol-map",
       "js/chart07_world_heritage_symbol_map.vg.json",
       { actions: false }
-    )
+    );
   </script>
 
 </body> 
