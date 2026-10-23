@@ -59,13 +59,13 @@ h2 {
 
 .introduction,
 .chart-insight {
+    max-width: 54ch;
     font-size: 18px;
     line-height: 1.6;
     color: #374151;
 }
 
 .introduction {
-    max-width: 100%;
     margin: 0;
 }
 
@@ -74,7 +74,7 @@ h2 {
 }
 
 .chart-source {
-    max-width: 100%;
+    max-width: 80ch;
     margin: 12px 0 0;
     font-size: 13px;
     line-height: 1.5;
@@ -121,4 +121,19 @@ footer h2 {
     .chart-row {
         grid-template-columns: 1fr;
     }
+}
+/* Radio buttons that Vega-Lite adds under a chart (e.g. the map close-up toggle) */
+.vega-bind {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.vega-bind-name {
+    font-weight: bold;
+    margin-right: 6px;
+}
+
+.vega-bind label {
+    margin-right: 12px;
 }

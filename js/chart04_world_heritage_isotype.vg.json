@@ -1,18 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Australia's World Heritage by category",
     "subtitle": "Each symbol represents one of Australia's 21 World Heritage properties."
   },
-
   "width": 520,
   "height": 180,
-
   "data": {
     "url": "data/world_heritage_australia.csv"
   },
-
   "transform": [
     {
       "window": [
@@ -21,9 +17,10 @@
           "as": "site_number"
         }
       ],
-      "groupby": ["category"]
+      "groupby": [
+        "category"
+      ]
     },
-
     {
       "joinaggregate": [
         {
@@ -31,22 +28,17 @@
           "as": "category_count"
         }
       ],
-      "groupby": ["category"]
-    },
-
-    {
-      "calculate": "datum.category === 'Natural' ? '🌿' : datum.category === 'Cultural' ? '🏛' : '◆'",
-      "as": "icon"
+      "groupby": [
+        "category"
+      ]
     }
   ],
-
   "encoding": {
     "x": {
       "field": "site_number",
       "type": "ordinal",
       "axis": null
     },
-
     "y": {
       "field": "category",
       "type": "nominal",
@@ -63,26 +55,33 @@
       }
     }
   },
-
   "layer": [
     {
       "mark": {
-        "type": "text",
-        "fontSize": 24
+        "type": "point",
+        "filled": true,
+        "size": 360,
+        "opacity": 1,
+        "strokeWidth": 0
       },
-
       "encoding": {
-        "text": {
-          "field": "icon",
-          "type": "nominal"
-        },
-
         "color": {
           "field": "category",
           "type": "nominal",
-          "legend": null
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Cultural",
+              "Natural",
+              "Mixed"
+            ],
+            "range": [
+              "#2a78d6",
+              "#1baf7a",
+              "#eda100"
+            ]
+          }
         },
-
         "tooltip": [
           {
             "field": "name",
@@ -100,17 +99,32 @@
             "title": "Inscribed",
             "format": "d"
           }
-        ]
+        ],
+        "shape": {
+          "field": "category",
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Natural",
+              "Cultural",
+              "Mixed"
+            ],
+            "range": [
+              "M0,-1 L0.55,-0.25 L0.3,-0.25 L0.75,0.4 L0.18,0.4 L0.18,1 L-0.18,1 L-0.18,0.4 L-0.75,0.4 L-0.3,-0.25 L-0.55,-0.25 Z",
+              "M0,-1 L1,-0.45 L-1,-0.45 Z M-0.85,-0.3 L-0.55,-0.3 L-0.55,0.65 L-0.85,0.65 Z M-0.15,-0.3 L0.15,-0.3 L0.15,0.65 L-0.15,0.65 Z M0.55,-0.3 L0.85,-0.3 L0.85,0.65 L0.55,0.65 Z M-1,0.78 L1,0.78 L1,1 L-1,1 Z",
+              "M-1,-0.55 L-0.05,-0.55 L-0.05,-0.3 L-1,-0.3 Z M-0.75,-0.3 L-0.3,-0.3 L-0.3,0.72 L-0.75,0.72 Z M-1,0.72 L-0.05,0.72 L-0.05,1 L-1,1 Z M0.55,-1 L1,0.25 L0.68,0.25 L0.68,1 L0.42,1 L0.42,0.25 L0.1,0.25 Z"
+            ]
+          }
+        }
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.site_number === datum.category_count"
         }
       ],
-
       "mark": {
         "type": "text",
         "align": "left",
@@ -119,35 +133,29 @@
         "fontSize": 13,
         "fontWeight": "bold"
       },
-
       "encoding": {
         "text": {
           "field": "category_count",
           "type": "quantitative",
           "format": "d"
         },
-
         "color": {
           "value": "#333333"
         }
       }
     }
   ],
-
   "config": {
-    "font": "Helvetica Neue, Arial, sans-serif",
-
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
     "title": {
-      "fontSize": 15,
+      "fontSize": 16,
       "subtitleFontSize": 12,
       "anchor": "start"
     },
-
     "axis": {
       "labelFontSize": 12,
       "titleFontSize": 12
     },
-
     "view": {
       "stroke": null
     }

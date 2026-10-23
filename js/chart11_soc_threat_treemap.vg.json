@@ -1,20 +1,477 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
-  "title": "",
-
-  "width": 0,
-  "height": 0,
-
-  "data": {
-    "url": "data/"
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Treemap of the threats listed in UNESCO State of Conservation reports on Australian World Heritage properties, 1983 to 2026. Area = number of times each threat was listed; the blue part of each box = its listings in reports from 2020 onwards.",
+  "width": 940,
+  "height": 470,
+  "padding": 5,
+  "autosize": "pad",
+  "title": {
+    "text": "Top threats have shifted from mining and management plans to climate, pollution and shipping",
+    "subtitle": [
+      "Each box is one type of threat, sized by how many times UNESCO listed it in a State of Conservation report,",
+      "grouped into UNESCO's categories. The blue part of each box shows listings since 2020. Hover for details."
+    ],
+    "anchor": "start",
+    "offset": 10
   },
-
-  "transform": [
-    
+  "data": [
+    {
+      "name": "listings",
+      "url": "data/soc_factors_australia.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "year": "number"
+        }
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.primary_factor !== 'None identified'"
+        },
+        {
+          "type": "formula",
+          "as": "recent",
+          "expr": "datum.year >= 2020 ? 1 : 0"
+        },
+        {
+          "type": "formula",
+          "as": "reef",
+          "expr": "datum.property === 'Great Barrier Reef' ? 1 : 0"
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "threat_group",
+            "primary_factor",
+            "factor",
+            "factor_short"
+          ],
+          "ops": [
+            "count",
+            "sum",
+            "sum",
+            "distinct",
+            "max"
+          ],
+          "fields": [
+            null,
+            "recent",
+            "reef",
+            "property",
+            "year"
+          ],
+          "as": [
+            "times_listed",
+            "recent_listings",
+            "reef_listings",
+            "properties",
+            "last_year"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "recent_share",
+          "expr": "datum.recent_listings / datum.times_listed"
+        },
+        {
+          "type": "formula",
+          "as": "name_lines",
+          "expr": "{'Surface water pollution': ['Surface water', 'pollution'], 'Commercial development': ['Commercial', 'development'], 'Groundwater pollution': ['Groundwater', 'pollution'], 'Visitor accommodation': ['Visitor', 'accommodation'], 'Other climate impacts': ['Other climate', 'impacts'], 'Non-renewable energy': ['Non-renewable', 'energy'], 'Water infrastructure': ['Water', 'infrastructure'], 'Catchment management': ['Catchment', 'management'], 'Dingo risk to people': ['Dingo risk', 'to people'], 'Temperature change': ['Temperature', 'change'], 'Visitor facilities': ['Visitor', 'facilities'], 'Illegal activities': ['Illegal', 'activities'], 'Roads and railways': ['Roads and', 'railways'], 'Deliberate damage': ['Deliberate', 'damage'], 'Water extraction': ['Water', 'extraction'], 'Invasive species': ['Invasive', 'species'], 'Ship groundings': ['Ship', 'groundings'], 'Legal framework': ['Legal', 'framework'], 'Tourism impacts': ['Tourism', 'impacts'], 'Management plan': ['Management', 'plan'], 'Ocean changes': ['Ocean', 'changes']}[datum.factor_short] || [datum.factor_short]"
+        },
+        {
+          "type": "formula",
+          "as": "id",
+          "expr": "datum.threat_group + '|' + datum.factor"
+        },
+        {
+          "type": "formula",
+          "as": "parent",
+          "expr": "datum.threat_group"
+        }
+      ]
+    },
+    {
+      "name": "groups_table",
+      "source": "listings",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "threat_group",
+            "primary_factor"
+          ],
+          "ops": [
+            "sum",
+            "sum"
+          ],
+          "fields": [
+            "times_listed",
+            "reef_listings"
+          ],
+          "as": [
+            "group_total",
+            "group_reef"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "id",
+          "expr": "datum.threat_group"
+        },
+        {
+          "type": "formula",
+          "as": "parent",
+          "expr": "'root'"
+        }
+      ]
+    },
+    {
+      "name": "root_row",
+      "values": [
+        {
+          "id": "root",
+          "parent": null
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "source": [
+        "root_row",
+        "groups_table",
+        "listings"
+      ],
+      "transform": [
+        {
+          "type": "stratify",
+          "key": "id",
+          "parentKey": "parent"
+        },
+        {
+          "type": "treemap",
+          "field": "times_listed",
+          "sort": {
+            "field": "value",
+            "order": "descending"
+          },
+          "round": true,
+          "method": "squarify",
+          "ratio": 1.4,
+          "paddingInner": 2,
+          "paddingOuter": 3,
+          "paddingTop": 20,
+          "size": [
+            {
+              "signal": "width"
+            },
+            {
+              "signal": "height"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "group_nodes",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.depth === 1"
+        },
+        {
+          "type": "formula",
+          "as": "w",
+          "expr": "datum.x1 - datum.x0"
+        },
+        {
+          "type": "formula",
+          "as": "short_name",
+          "expr": "{'Energy and water infrastructure': 'Energy and water', 'Tourist facilities and housing': 'Tourist facilities', 'Management, staff and funding': 'Management', 'Illegal activities and damage': 'Illegal activities', 'Roads, shipping and airports': 'Transport', 'Mining and other extraction': 'Mining', 'Climate change and storms': 'Climate change', 'Bushfires and erosion': 'Bushfires', 'Logging and fishing': 'Logging, fishing', 'Invasive species': 'Invasive species', 'Visitor pressure': 'Visitors', 'Water pollution': 'Water pollution', 'Other threats': 'Other threats'}[datum.threat_group]"
+        },
+        {
+          "type": "formula",
+          "as": "tiny_name",
+          "expr": "{'Energy and water infrastructure': 'Energy', 'Tourist facilities and housing': 'Tourism', 'Management, staff and funding': 'Management', 'Illegal activities and damage': 'Illegal', 'Roads, shipping and airports': 'Transport', 'Mining and other extraction': 'Mining', 'Climate change and storms': 'Climate', 'Bushfires and erosion': 'Fires', 'Logging and fishing': 'Logging', 'Invasive species': 'Invasive', 'Visitor pressure': 'Visitors', 'Water pollution': 'Pollution', 'Other threats': 'Other'}[datum.threat_group]"
+        },
+        {
+          "type": "formula",
+          "as": "label",
+          "expr": "length(datum.threat_group) * 6 + 8 <= datum.w ? datum.threat_group : length(datum.short_name) * 6 + 8 <= datum.w ? datum.short_name : datum.tiny_name"
+        }
+      ]
+    },
+    {
+      "name": "leaf_nodes",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.depth === 2"
+        },
+        {
+          "type": "formula",
+          "as": "w",
+          "expr": "datum.x1 - datum.x0"
+        },
+        {
+          "type": "formula",
+          "as": "h",
+          "expr": "datum.y1 - datum.y0"
+        },
+        {
+          "type": "formula",
+          "as": "label",
+          "expr": "datum.w >= length(datum.factor_short) * 6 + 8 && datum.h >= 34 ? [datum.factor_short, datum.times_listed + ''] : length(datum.name_lines) > 1 && datum.w >= max(length(datum.name_lines[0]), length(datum.name_lines[1])) * 6 + 8 && datum.h >= 48 ? [datum.name_lines[0], datum.name_lines[1], datum.times_listed + ''] : ''"
+        }
+      ]
+    }
   ],
-
-  "encoding": {
-
+  "scales": [
+    {
+      "name": "status",
+      "type": "ordinal",
+      "domain": [
+        "Listed since 2020",
+        "Listed 1983 to 2019"
+      ],
+      "range": [
+        "#5598e7",
+        "#e1e0d9"
+      ]
+    }
+  ],
+  "legends": [
+    {
+      "fill": "status",
+      "orient": "top",
+      "direction": "horizontal",
+      "symbolType": "square",
+      "labelFontSize": 12,
+      "labelColor": "#374151",
+      "offset": 8,
+      "labelLimit": 320
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {
+        "data": "group_nodes"
+      },
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "fill": {
+            "value": "#f6f5f2"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "group_nodes"
+      },
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "fontSize": {
+            "value": 11
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#0b0b0b"
+          },
+          "baseline": {
+            "value": "top"
+          }
+        },
+        "update": {
+          "x": {
+            "signal": "datum.x0 + 4"
+          },
+          "y": {
+            "signal": "datum.y0 + 5"
+          },
+          "text": {
+            "field": "label"
+          },
+          "limit": {
+            "signal": "max(0, datum.w - 8)"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {
+        "data": "leaf_nodes"
+      },
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "fill": {
+            "value": "#e1e0d9"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {
+        "data": "leaf_nodes"
+      },
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "fill": {
+            "value": "#5598e7"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "signal": "datum.x0 + datum.w * datum.recent_share"
+          },
+          "y2": {
+            "field": "y1"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "name": "leaves",
+      "from": {
+        "data": "leaf_nodes"
+      },
+      "encode": {
+        "enter": {
+          "fill": {
+            "value": "transparent"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "stroke": {
+            "value": "transparent"
+          },
+          "strokeWidth": {
+            "value": 0
+          },
+          "tooltip": {
+            "signal": "{'Threat': datum.factor_short, 'UNESCO name': datum.factor, 'UNESCO category': datum.primary_factor, 'Times listed': datum.times_listed, 'Listed since 2020': datum.recent_listings, 'Properties': datum.properties, 'Listed for the Great Barrier Reef': datum.reef_listings, 'Last listed': datum.last_year}"
+          }
+        },
+        "hover": {
+          "stroke": {
+            "value": "#0b0b0b"
+          },
+          "strokeWidth": {
+            "value": 1.5
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "leaf_nodes"
+      },
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "fontSize": {
+            "value": 11
+          },
+          "baseline": {
+            "value": "top"
+          },
+          "lineHeight": {
+            "value": 14
+          },
+          "fill": {
+            "value": "#0b0b0b"
+          }
+        },
+        "update": {
+          "x": {
+            "signal": "datum.x0 + 5"
+          },
+          "y": {
+            "signal": "datum.y0 + 5"
+          },
+          "text": {
+            "field": "label"
+          },
+          "limit": {
+            "signal": "max(0, datum.w - 10)"
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "text": {
+      "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif"
+    },
+    "title": {
+      "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "subtitleFont": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+      "subtitleColor": "#0b0b0b"
+    },
+    "legend": {
+      "labelFont": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif"
+    }
   }
 }

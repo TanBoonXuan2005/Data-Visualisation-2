@@ -1,24 +1,35 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Where are Australia's National Heritage places?",
-    "subtitle": "Each dot represents one listed place. Click a legend category to highlight its distribution."  
+    "subtitle": [
+      "Each dot is one listed place. Click a legend category to highlight it.",
+      "Zoom into the south-east, Melbourne or Sydney with the map view below."
+    ]
   },
-
   "width": "container",
   "height": 430,
   "autosize": {
     "type": "fit",
     "contains": "padding"
   },
-
   "projection": {
     "type": "conicEqualArea",
-    "parallels": [-18, -36],
-    "rotate": [-134, 0]
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0
+    ],
+    "scale": {
+      "expr": "map_scale"
+    },
+    "translate": {
+      "expr": "map_view === 'South-east' ? [width / 2 - map_scale * 0.1775, height / 2 - map_scale * 1.0976] : map_view === 'Melbourne' ? [width / 2 - map_scale * 0.15181, height / 2 - map_scale * 1.12351] : map_view === 'Sydney' ? [width / 2 - map_scale * 0.24765, height / 2 - map_scale * 1.06426] : [width / 2 - map_scale * 0.0208, height / 2 - map_scale * 0.9234]"
+    }
   },
-
   "layer": [
     {
       "data": {
@@ -28,56 +39,51 @@
           "feature": "australia_states_2026"
         }
       },
-
       "mark": {
         "type": "geoshape",
         "fill": "#eeeeee",
         "stroke": "white",
-        "strokeWidth": 1
+        "strokeWidth": 1,
+        "clip": true
       }
     },
-
     {
       "data": {
         "url": "data/national_heritage_places.csv"
       },
-
       "params": [
         {
           "name": "heritageSelection",
           "select": {
             "type": "point",
-            "fields": ["CLASS"]
+            "fields": [
+              "CLASS"
+            ]
           },
           "bind": "legend"
         }
       ],
-      
       "transform": [
         {
           "filter": "indexof([106080, 105713, 105707, 105962, 106167, 106065, 105698], toNumber(datum.PLACE_ID)) === -1"
         }
       ],
-
-
       "mark": {
         "type": "circle",
         "size": 40,
         "stroke": "white",
-        "strokeWidth": 0.8
+        "strokeWidth": 0.8,
+        "clip": true
       },
-
       "encoding": {
         "longitude": {
           "field": "X",
           "type": "quantitative"
         },
-
         "latitude": {
           "field": "Y",
           "type": "quantitative"
         },
-
         "color": {
           "field": "CLASS",
           "type": "nominal",
@@ -89,9 +95,9 @@
               "Indigenous"
             ],
             "range": [
-              "#1f77b4",
-              "#2ca02c",
-              "#ff7f0e"
+              "#2a78d6",
+              "#1baf7a",
+              "#eb6834"
             ]
           },
           "legend": {
@@ -103,7 +109,6 @@
             "labelFontSize": 12
           }
         },
-
         "tooltip": [
           {
             "field": "NAME",
@@ -121,7 +126,6 @@
             "title": "Place ID"
           }
         ],
-
         "opacity": {
           "condition": {
             "param": "heritageSelection",
@@ -130,6 +134,240 @@
           "value": 0.15
         }
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 144.9631,
+            "lat": -37.8136,
+            "lon2": 141.2,
+            "lat2": -40.9
+          }
+        ]
+      },
+      "transform": [
+        {
+          "filter": "map_view === 'Australia' || map_view === 'South-east'"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "#52514e",
+        "strokeWidth": 1,
+        "clip": true
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon2"
+        },
+        "latitude2": {
+          "field": "lat2"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 141.1,
+            "lat": -41.0,
+            "note": "Melbourne: 12 places within 15 km"
+          }
+        ]
+      },
+      "transform": [
+        {
+          "filter": "map_view === 'Australia' || map_view === 'South-east'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -3,
+        "fontSize": 11,
+        "color": "#0b0b0b",
+        "clip": true
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 151.2093,
+            "lat": -33.8688,
+            "lon2": 154.7,
+            "lat2": -35.4
+          }
+        ]
+      },
+      "transform": [
+        {
+          "filter": "map_view === 'Australia' || map_view === 'South-east'"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "#52514e",
+        "strokeWidth": 1,
+        "clip": true
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon2"
+        },
+        "latitude2": {
+          "field": "lat2"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 154.8,
+            "lat": -35.5,
+            "note": "Sydney: 11"
+          }
+        ]
+      },
+      "transform": [
+        {
+          "filter": "map_view === 'Australia' || map_view === 'South-east'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 3,
+        "fontSize": 11,
+        "color": "#0b0b0b",
+        "clip": true
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "transform": [
+        {
+          "filter": "map_view === 'Melbourne' || map_view === 'Sydney'"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "color": "#52514e",
+        "x": 12,
+        "x2": {
+          "expr": "12 + map_scale * (map_view === 'Melbourne' ? 0.000315522 : 0.000311834)"
+        },
+        "y": {
+          "expr": "height - 15"
+        },
+        "y2": {
+          "expr": "height - 13"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "transform": [
+        {
+          "filter": "map_view === 'Melbourne' || map_view === 'Sydney'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "fontSize": 11,
+        "color": "#0b0b0b",
+        "x": {
+          "expr": "12 + map_scale * (map_view === 'Melbourne' ? 0.000315522 : 0.000311834) / 2"
+        },
+        "y": {
+          "expr": "height - 18"
+        },
+        "text": "2 km"
+      }
     }
-  ]
+  ],
+  "params": [
+    {
+      "name": "map_view",
+      "value": "Australia",
+      "bind": {
+        "input": "radio",
+        "options": [
+          "Australia",
+          "South-east",
+          "Melbourne",
+          "Sydney"
+        ],
+        "name": "Map view "
+      }
+    },
+    {
+      "name": "map_scale",
+      "expr": "map_view === 'South-east' ? 0.94 * min(width / 0.2452, height / 0.2833) : map_view === 'Melbourne' ? 0.88 * min(width / 0.0014, height / 0.00168) : map_view === 'Sydney' ? 0.88 * min(width / 0.00196, height / 0.00172) : 0.94 * min(width / 0.6945, height / 0.6029)"
+    }
+  ],
+  "config": {
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    }
+  }
 }

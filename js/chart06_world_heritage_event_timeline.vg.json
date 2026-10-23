@@ -1,18 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "How has Australia's World Heritage recognition evolved?",
-    "subtitle": "Circles show inscription years; diamonds show additional dates recorded in UNESCO's World Heritage dataset."
+    "subtitle": [
+      "Circles show the year each property was inscribed. Diamonds show later decisions:",
+      "boundary extensions, and for Uluṟu-Kata Tjuṯa its 1994 recognition for cultural values. Hover for details."
+    ]
   },
-
   "width": 650,
   "height": 570,
-
   "data": {
     "url": "data/world_heritage_australia.csv"
   },
-
   "encoding": {
     "y": {
       "field": "name",
@@ -27,11 +26,11 @@
         "labelLimit": 290,
         "labelFontSize": 12,
         "domain": false,
-        "ticks": false
+        "ticks": false,
+        "labelExpr": "replace(datum.label, 'Australian Fossil Mammal Sites (Riversleigh / Naracoorte)', 'Fossil Mammal Sites (Riversleigh / Naracoorte)')"
       }
     }
   },
-
   "layer": [
     {
       "transform": [
@@ -40,7 +39,9 @@
           "as": "secondary_years"
         },
         {
-          "flatten": ["secondary_years"]
+          "flatten": [
+            "secondary_years"
+          ]
         },
         {
           "calculate": "toNumber(datum.secondary_years)",
@@ -50,20 +51,21 @@
           "filter": "isValid(datum.event_year) && datum.event_year >= 1980 && datum.event_year != datum.year"
         }
       ],
-
       "mark": {
         "type": "rule",
         "color": "#9ca3af",
         "strokeWidth": 2,
         "opacity": 0.5
       },
-
       "encoding": {
         "x": {
           "field": "year",
           "type": "quantitative",
           "scale": {
-            "domain": [1980, 2026]
+            "domain": [
+              1980,
+              2026
+            ]
           }
         },
         "x2": {
@@ -71,7 +73,6 @@
         }
       }
     },
-
     {
       "mark": {
         "type": "point",
@@ -79,14 +80,16 @@
         "filled": true,
         "size": 145
       },
-
       "encoding": {
         "x": {
           "field": "year",
           "type": "quantitative",
           "title": "Year",
           "scale": {
-            "domain": [1980, 2026],
+            "domain": [
+              1980,
+              2026
+            ],
             "nice": false
           },
           "axis": {
@@ -95,14 +98,21 @@
             "grid": true
           }
         },
-
         "color": {
           "field": "category",
           "type": "nominal",
           "title": "World Heritage category",
           "scale": {
-            "domain": ["Cultural", "Natural", "Mixed"],
-            "range": ["#1f77b4", "#2ca02c", "#ff7f0e"]
+            "domain": [
+              "Cultural",
+              "Natural",
+              "Mixed"
+            ],
+            "range": [
+              "#2a78d6",
+              "#1baf7a",
+              "#eda100"
+            ]
           },
           "legend": {
             "orient": "bottom",
@@ -112,7 +122,6 @@
             "symbolSize": 100
           }
         },
-
         "tooltip": [
           {
             "field": "name",
@@ -124,11 +133,15 @@
             "type": "quantitative",
             "title": "Inscription year",
             "format": "d"
+          },
+          {
+            "field": "category",
+            "type": "nominal",
+            "title": "Category"
           }
         ]
       }
     },
-
     {
       "transform": [
         {
@@ -136,7 +149,9 @@
           "as": "secondary_years"
         },
         {
-          "flatten": ["secondary_years"]
+          "flatten": [
+            "secondary_years"
+          ]
         },
         {
           "calculate": "toNumber(datum.secondary_years)",
@@ -144,9 +159,12 @@
         },
         {
           "filter": "isValid(datum.event_year) && datum.event_year >= 1980 && datum.event_year != datum.year"
+        },
+        {
+          "calculate": "toNumber(datum.unesco_id) === 447 && datum.event_year === 1994 ? 'Renominated under cultural criteria, boundary modified' : 'Boundary extended (significant modification)'",
+          "as": "event_type"
         }
       ],
-
       "mark": {
         "type": "point",
         "shape": "diamond",
@@ -155,19 +173,15 @@
         "stroke": "white",
         "strokeWidth": 0.8
       },
-
       "encoding": {
         "x": {
           "field": "event_year",
           "type": "quantitative"
         },
-
         "color": {
           "field": "category",
-          "type": "nominal",
-          "legend": null
+          "type": "nominal"
         },
-
         "tooltip": [
           {
             "field": "name",
@@ -177,28 +191,126 @@
           {
             "field": "event_year",
             "type": "quantitative",
-            "title": "Additional UNESCO date",
+            "title": "Year",
             "format": "d"
+          },
+          {
+            "field": "event_type",
+            "type": "nominal",
+            "title": "Decision"
           }
         ]
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 2003.5
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#898781",
+        "strokeDash": [
+          4,
+          3
+        ],
+        "strokeWidth": 1,
+        "y": 0,
+        "y2": {
+          "expr": "height"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": null
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 2003.0,
+            "note": [
+              "1981 to 2003: every property",
+              "listed was natural or mixed"
+            ]
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "dx": -6,
+        "dy": 4,
+        "fontSize": 11,
+        "lineHeight": 14,
+        "color": "#374151",
+        "y": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": null,
+        "text": {
+          "field": "note"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 2004.0,
+            "note": [
+              "Since 2004: five of six",
+              "new listings are cultural"
+            ]
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 6,
+        "dy": 4,
+        "fontSize": 11,
+        "lineHeight": 14,
+        "color": "#374151",
+        "y": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": null,
+        "text": {
+          "field": "note"
+        }
+      }
     }
   ],
-
   "config": {
-    "font": "Helvetica Neue, Arial, sans-serif",
-
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
     "title": {
       "fontSize": 16,
       "subtitleFontSize": 12,
       "anchor": "start"
     },
-
     "axis": {
       "labelFontSize": 11,
       "titleFontSize": 12
     },
-
     "view": {
       "stroke": null
     }

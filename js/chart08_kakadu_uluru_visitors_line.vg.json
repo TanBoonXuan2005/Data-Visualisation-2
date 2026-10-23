@@ -23,7 +23,7 @@
       "as": "start"
     },
     {
-      "calculate": "datum.start + '-' + substring(toString(datum.start + 1), 2, 4)",
+      "calculate": "datum.start + '–' + substring(toString(datum.start + 1), 2, 4)",
       "as": "year_label"
     },
     {"calculate": "toNumber(replace(toString(datum.Kakadu), /,/g, ''))", "as": "Kakadu_visitors"},
@@ -144,7 +144,7 @@
   ],
 
   "config": {
-    "font": "Helvetica Neue, Arial, sans-serif",
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
     "title": {"fontSize": 16, "subtitleFontSize": 12, "anchor": "start"},
     "axis": {"labelFontSize": 12, "titleFontSize": 12, "labelColor": "#52514e", "titleColor": "#52514e"},
     "legend": {"labelFontSize": 12},

@@ -1,57 +1,90 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "Where are they most concentrated?",
     "subtitle": "Listed places per 100,000 km² of land, by state and territory"
   },
-
   "width": "container",
   "height": 430,
   "autosize": {
     "type": "fit",
     "contains": "padding"
   },
-
   "projection": {
     "type": "conicEqualArea",
-    "parallels": [-18, -36],
-    "rotate": [-134, 0]
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0
+    ]
   },
-
   "layer": [
     {
       "data": {
         "url": "data/National_Heritage_List_Australia.csv"
       },
-
       "transform": [
         {
           "filter": "datum.STATUS === 'Listed place' && datum.STATE !== 'EXT'"
         },
         {
           "aggregate": [
-            {"op": "distinct", "field": "PLACE_ID", "as": "listed_places"}
+            {
+              "op": "distinct",
+              "field": "PLACE_ID",
+              "as": "listed_places"
+            }
           ],
-          "groupby": ["STATE"]
+          "groupby": [
+            "STATE"
+          ]
         },
         {
           "lookup": "STATE",
           "from": {
             "data": {
               "values": [
-                {"abbr": "NSW", "state_name": "New South Wales"},
-                {"abbr": "VIC", "state_name": "Victoria"},
-                {"abbr": "QLD", "state_name": "Queensland"},
-                {"abbr": "SA", "state_name": "South Australia"},
-                {"abbr": "WA", "state_name": "Western Australia"},
-                {"abbr": "TAS", "state_name": "Tasmania"},
-                {"abbr": "NT", "state_name": "Northern Territory"},
-                {"abbr": "ACT", "state_name": "Australian Capital Territory"}
+                {
+                  "abbr": "NSW",
+                  "state_name": "New South Wales"
+                },
+                {
+                  "abbr": "VIC",
+                  "state_name": "Victoria"
+                },
+                {
+                  "abbr": "QLD",
+                  "state_name": "Queensland"
+                },
+                {
+                  "abbr": "SA",
+                  "state_name": "South Australia"
+                },
+                {
+                  "abbr": "WA",
+                  "state_name": "Western Australia"
+                },
+                {
+                  "abbr": "TAS",
+                  "state_name": "Tasmania"
+                },
+                {
+                  "abbr": "NT",
+                  "state_name": "Northern Territory"
+                },
+                {
+                  "abbr": "ACT",
+                  "state_name": "Australian Capital Territory"
+                }
               ]
             },
             "key": "abbr",
-            "fields": ["state_name"]
+            "fields": [
+              "state_name"
+            ]
           }
         },
         {
@@ -59,7 +92,10 @@
           "from": {
             "data": {
               "url": "data/australia_states.topojson",
-              "format": {"type": "topojson", "feature": "australia_states_2026"}
+              "format": {
+                "type": "topojson",
+                "feature": "australia_states_2026"
+              }
             },
             "key": "properties.STATE_NAME_2026"
           },
@@ -74,50 +110,99 @@
           "as": "density_class"
         }
       ],
-
-      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 1},
-
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
       "encoding": {
-        "shape": {"field": "geo", "type": "geojson"},
-
+        "shape": {
+          "field": "geo",
+          "type": "geojson"
+        },
         "color": {
-          "field": "density_class",
-          "type": "ordinal",
+          "field": "places_per_100k_km2",
+          "type": "quantitative",
           "title": "Places per 100,000 km²",
           "scale": {
-            "domain": ["Under 2", "2 to 10", "10 to 50", "50 or more"],
-            "range": ["#86b6ef", "#3987e5", "#1c5cab", "#0d366b"]
+            "type": "threshold",
+            "domain": [
+              2,
+              10,
+              50
+            ],
+            "range": [
+              "#b7d3f6",
+              "#5598e7",
+              "#1c5cab",
+              "#0d366b"
+            ]
           },
-          "legend": {
-            "orient": "bottom",
-            "direction": "horizontal",
-            "symbolType": "square",
-            "symbolSize": 140,
-            "symbolStrokeWidth": 0
-          }
+          "legend": null
         },
-
         "tooltip": [
-          {"field": "state_name", "type": "nominal", "title": "State or territory"},
-          {"field": "listed_places", "type": "quantitative", "title": "Listed places"},
-          {"field": "places_per_100k_km2", "type": "quantitative", "title": "Per 100,000 km²", "format": ".1f"}
+          {
+            "field": "state_name",
+            "type": "nominal",
+            "title": "State or territory"
+          },
+          {
+            "field": "listed_places",
+            "type": "quantitative",
+            "title": "Listed places"
+          },
+          {
+            "field": "places_per_100k_km2",
+            "type": "quantitative",
+            "title": "Per 100,000 km²",
+            "format": ".1f"
+          }
         ]
       }
     },
-
     {
-      "data": {"values": [{"lon": 149.1, "lat": -35.4, "lon2": 153.2, "lat2": -37.6}]},
-      "mark": {"type": "rule", "color": "#52514e", "strokeWidth": 1},
+      "data": {
+        "values": [
+          {
+            "lon": 149.1,
+            "lat": -35.4,
+            "lon2": 153.2,
+            "lat2": -37.6
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#52514e",
+        "strokeWidth": 1
+      },
       "encoding": {
-        "longitude": {"field": "lon", "type": "quantitative"},
-        "latitude": {"field": "lat", "type": "quantitative"},
-        "longitude2": {"field": "lon2"},
-        "latitude2": {"field": "lat2"}
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon2"
+        },
+        "latitude2": {
+          "field": "lat2"
+        }
       }
     },
-
     {
-      "data": {"values": [{"lon": 153.2, "lat": -37.6, "note": "ACT: 212"}]},
+      "data": {
+        "values": [
+          {
+            "lon": 153.2,
+            "lat": -37.6,
+            "note": "ACT: 212"
+          }
+        ]
+      },
       "mark": {
         "type": "text",
         "align": "left",
@@ -128,17 +213,205 @@
         "color": "#0b0b0b"
       },
       "encoding": {
-        "longitude": {"field": "lon", "type": "quantitative"},
-        "latitude": {"field": "lat", "type": "quantitative"},
-        "text": {"field": "note"}
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "x": 2,
+        "y": {
+          "expr": "height - 36"
+        },
+        "align": "left",
+        "baseline": "bottom",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#0b0b0b",
+        "text": "Places per 100,000 km²"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "x": 2,
+        "x2": 65,
+        "y": {
+          "expr": "height - 30"
+        },
+        "y2": {
+          "expr": "height - 18"
+        },
+        "fill": "#b7d3f6"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "x": 33.5,
+        "y": {
+          "expr": "height - 14"
+        },
+        "align": "center",
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#374151",
+        "text": "Under 2"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "x": 66,
+        "x2": 129,
+        "y": {
+          "expr": "height - 30"
+        },
+        "y2": {
+          "expr": "height - 18"
+        },
+        "fill": "#5598e7"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "x": 97.5,
+        "y": {
+          "expr": "height - 14"
+        },
+        "align": "center",
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#374151",
+        "text": "2 to 10"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "x": 130,
+        "x2": 193,
+        "y": {
+          "expr": "height - 30"
+        },
+        "y2": {
+          "expr": "height - 18"
+        },
+        "fill": "#1c5cab"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "x": 161.5,
+        "y": {
+          "expr": "height - 14"
+        },
+        "align": "center",
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#374151",
+        "text": "10 to 50"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "x": 194,
+        "x2": 257,
+        "y": {
+          "expr": "height - 30"
+        },
+        "y2": {
+          "expr": "height - 18"
+        },
+        "fill": "#0d366b"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "x": 225.5,
+        "y": {
+          "expr": "height - 14"
+        },
+        "align": "center",
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#374151",
+        "text": "50 or more"
       }
     }
   ],
-
   "config": {
-    "font": "Helvetica Neue, Arial, sans-serif",
-    "title": {"fontSize": 16, "subtitleFontSize": 12, "anchor": "start"},
-    "legend": {"labelFontSize": 12, "titleFontSize": 12},
-    "view": {"stroke": null}
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12
+    },
+    "view": {
+      "stroke": null
+    }
   }
 }

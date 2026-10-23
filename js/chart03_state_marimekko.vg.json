@@ -1,0 +1,368 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Historic in the south-east, natural and Indigenous in the north and west",
+    "subtitle": [
+      "Column width shows how many places each state or territory has; colour shows their type.",
+      "Places in more than one jurisdiction are counted in each. Hover for details."
+    ]
+  },
+  "width": 600,
+  "height": 290,
+  "data": {
+    "url": "data/National_Heritage_List_Australia.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.STATUS === 'Listed place'"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "distinct",
+          "field": "PLACE_ID",
+          "as": "places"
+        }
+      ],
+      "groupby": [
+        "STATE",
+        "CLASS"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "places",
+          "as": "state_total"
+        }
+      ],
+      "groupby": [
+        "STATE"
+      ]
+    },
+    {
+      "calculate": "datum.CLASS === 'Historic' ? datum.places : 0",
+      "as": "historic_places"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "historic_places",
+          "as": "state_historic"
+        }
+      ],
+      "groupby": [
+        "STATE"
+      ]
+    },
+    {
+      "calculate": "datum.STATE === 'EXT' ? -1 : datum.state_historic / datum.state_total",
+      "as": "historic_share"
+    },
+    {
+      "calculate": "indexof(['Historic', 'Indigenous', 'Natural'], datum.CLASS)",
+      "as": "class_order"
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "state_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "historic_share",
+          "order": "descending"
+        },
+        {
+          "field": "STATE",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "stack": "places",
+      "groupby": [],
+      "sort": [
+        {
+          "field": "state_rank",
+          "order": "ascending"
+        },
+        {
+          "field": "class_order",
+          "order": "ascending"
+        }
+      ],
+      "as": [
+        "run_start",
+        "run_end"
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "min",
+          "field": "run_start",
+          "as": "x_start"
+        },
+        {
+          "op": "max",
+          "field": "run_end",
+          "as": "x_end"
+        }
+      ],
+      "groupby": [
+        "STATE"
+      ],
+      "frame": [
+        null,
+        null
+      ]
+    },
+    {
+      "stack": "places",
+      "groupby": [
+        "STATE"
+      ],
+      "sort": [
+        {
+          "field": "class_order",
+          "order": "ascending"
+        }
+      ],
+      "offset": "normalize",
+      "as": [
+        "y_start",
+        "y_end"
+      ]
+    },
+    {
+      "calculate": "datum.places / datum.state_total",
+      "as": "share"
+    },
+    {
+      "calculate": "(datum.x_start + datum.x_end) / 2",
+      "as": "x_mid"
+    },
+    {
+      "calculate": "(datum.y_start + datum.y_end) / 2",
+      "as": "y_mid"
+    },
+    {
+      "calculate": "datum.STATE === 'EXT' ? 'Ext.' : datum.STATE",
+      "as": "short_name"
+    },
+    {
+      "calculate": "{'NSW': 'New South Wales', 'VIC': 'Victoria', 'QLD': 'Queensland', 'WA': 'Western Australia', 'SA': 'South Australia', 'TAS': 'Tasmania', 'NT': 'Northern Territory', 'ACT': 'Australian Capital Territory', 'EXT': 'External territories'}[datum.STATE]",
+      "as": "jurisdiction"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "xOffset": 1,
+        "x2Offset": -1,
+        "yOffset": -1,
+        "y2Offset": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "x_start",
+          "type": "quantitative",
+          "scale": {
+            "zero": true,
+            "nice": false
+          },
+          "axis": null
+        },
+        "x2": {
+          "field": "x_end"
+        },
+        "y": {
+          "field": "y_start",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ]
+          },
+          "axis": {
+            "format": "%",
+            "title": "Share of places",
+            "values": [
+              0,
+              0.25,
+              0.5,
+              0.75,
+              1
+            ],
+            "domain": false,
+            "ticks": false,
+            "gridColor": "#e1e0d9"
+          }
+        },
+        "y2": {
+          "field": "y_end"
+        },
+        "color": {
+          "field": "CLASS",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Historic",
+              "Indigenous",
+              "Natural"
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834",
+              "#1baf7a"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "symbolType": "square",
+            "offset": 30
+          }
+        },
+        "tooltip": [
+          {
+            "field": "jurisdiction",
+            "type": "nominal",
+            "title": "State or territory"
+          },
+          {
+            "field": "CLASS",
+            "type": "nominal",
+            "title": "Type"
+          },
+          {
+            "field": "places",
+            "type": "quantitative",
+            "title": "Places"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share of its places",
+            "format": ".0%"
+          },
+          {
+            "field": "state_total",
+            "type": "quantitative",
+            "title": "All its places"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.places >= 8"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "field": "x_mid",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y_mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "places",
+          "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.CLASS === 'Natural'",
+            "value": "#0b0b0b"
+          },
+          "value": "#ffffff"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "row_in_state"
+            }
+          ],
+          "groupby": [
+            "STATE"
+          ],
+          "sort": [
+            {
+              "field": "class_order",
+              "order": "ascending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.row_in_state === 1"
+        },
+        {
+          "calculate": "[datum.short_name, toString(datum.state_total)]",
+          "as": "column_label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "baseline": "top",
+        "dy": 6,
+        "fontSize": 11,
+        "lineHeight": 13,
+        "color": "#374151"
+      },
+      "encoding": {
+        "x": {
+          "field": "x_mid",
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 0
+        },
+        "text": {
+          "field": "column_label"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start",
+      "offset": 10
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    },
+    "legend": {
+      "labelFontSize": 12
+    },
+    "view": {
+      "stroke": null
+    }
+  }
+}

@@ -1,28 +1,26 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "What makes Australia's World Heritage properties significant?",
-    "subtitle": "Filled cells show the UNESCO criteria used for each property. Criteria i-vi are cultural, vii-x are natural."
+    "subtitle": [
+      "Filled cells show the UNESCO criteria each property meets; numbers below each column count the properties.",
+      "Rows are grouped by category, and by year of listing within each group. Key on the right."
+    ]
   },
-
-  "width": 500,
+  "width": 480,
   "height": 500,
-
   "data": {
     "url": "data/world_heritage_australia.csv"
   },
-
   "transform": [
     {
       "calculate": "datum.category === 'Cultural' ? 1 : datum.category === 'Mixed' ? 2 : 3",
       "as": "category_order"
     },
     {
-      "calculate": "datum.category_order * 10000 - datum.year",
+      "calculate": "datum.category_order * 10000 + datum.year",
       "as": "sort_key"
     },
-
     {
       "calculate": "indexof(datum.criteria, '(i)') >= 0 ? 1 : 0",
       "as": "i"
@@ -63,7 +61,6 @@
       "calculate": "indexof(datum.criteria, '(x)') >= 0 ? 1 : 0",
       "as": "x"
     },
-
     {
       "fold": [
         "i",
@@ -77,10 +74,28 @@
         "ix",
         "x"
       ],
-      "as": ["criterion", "met"]
+      "as": [
+        "criterion",
+        "met"
+      ]
+    },
+    {
+      "calculate": "{'i': \"Human creativity\", 'ii': \"Exchange of ideas\", 'iii': \"Cultural traditions\", 'iv': \"Buildings and landscapes\", 'v': \"Traditional land use\", 'vi': \"Beliefs or events\", 'vii': \"Exceptional beauty\", 'viii': \"Earth's history\", 'ix': \"Living ecosystems\", 'x': \"Biodiversity\"}[datum.criterion]",
+      "as": "criterion_name"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "met",
+          "as": "criterion_total"
+        }
+      ],
+      "groupby": [
+        "criterion"
+      ]
     }
   ],
-
   "encoding": {
     "x": {
       "field": "criterion",
@@ -97,7 +112,7 @@
         "ix",
         "x"
       ],
-      "title": "UNESCO criterion",
+      "title": "UNESCO criterion (see key)",
       "axis": {
         "orient": "top",
         "labelAngle": 0
@@ -107,18 +122,18 @@
       "field": "name",
       "type": "ordinal",
       "sort": {
-        "field": "sort_key", 
+        "field": "sort_key",
         "op": "min",
         "order": "ascending"
       },
       "title": null,
       "axis": {
-        "labelLimit": 350,
-        "labelFontSize": 12
+        "labelLimit": 300,
+        "labelFontSize": 12,
+        "labelExpr": "replace(datum.label, 'Australian Fossil Mammal Sites (Riversleigh / Naracoorte)', 'Fossil Mammal Sites (Riversleigh / Naracoorte)')"
       }
     }
   },
-
   "layer": [
     {
       "mark": {
@@ -128,20 +143,17 @@
         "strokeWidth": 1
       }
     },
-
     {
       "transform": [
         {
           "filter": "datum.met === 1"
         }
       ],
-
       "mark": {
         "type": "rect",
         "stroke": "white",
         "strokeWidth": 1
       },
-
       "encoding": {
         "color": {
           "field": "category",
@@ -149,18 +161,17 @@
           "title": "Property category",
           "scale": {
             "domain": [
-              "Cultural", 
-              "Natural", 
+              "Cultural",
+              "Natural",
               "Mixed"
             ],
             "range": [
-              "#1f77b4", 
-              "#2ca02c", 
-              "#ff7f0e"
+              "#2a78d6",
+              "#1baf7a",
+              "#eda100"
             ]
           }
         },
-
         "tooltip": [
           {
             "field": "name",
@@ -178,6 +189,11 @@
             "title": "UNESCO criterion"
           },
           {
+            "field": "criterion_name",
+            "type": "nominal",
+            "title": "Criterion means"
+          },
+          {
             "field": "year",
             "type": "quantitative",
             "title": "Inscribed",
@@ -185,18 +201,195 @@
           }
         ]
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "text": "Cultural criteria",
+            "y": 112,
+            "bold": 1
+          },
+          {
+            "text": "Natural criteria",
+            "y": 236,
+            "bold": 1
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#0b0b0b"
+      },
+      "encoding": {
+        "x": {
+          "value": 500
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": null
+        },
+        "text": {
+          "field": "text"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "text": "i   Human creativity",
+            "y": 130,
+            "bold": 0
+          },
+          {
+            "text": "ii   Exchange of ideas",
+            "y": 146,
+            "bold": 0
+          },
+          {
+            "text": "iii   Cultural traditions",
+            "y": 162,
+            "bold": 0
+          },
+          {
+            "text": "iv   Buildings and landscapes",
+            "y": 178,
+            "bold": 0
+          },
+          {
+            "text": "v   Traditional land use",
+            "y": 194,
+            "bold": 0
+          },
+          {
+            "text": "vi   Beliefs or events",
+            "y": 210,
+            "bold": 0
+          },
+          {
+            "text": "vii   Exceptional beauty",
+            "y": 254,
+            "bold": 0
+          },
+          {
+            "text": "viii   Earth's history",
+            "y": 270,
+            "bold": 0
+          },
+          {
+            "text": "ix   Living ecosystems",
+            "y": 286,
+            "bold": 0
+          },
+          {
+            "text": "x   Biodiversity",
+            "y": 302,
+            "bold": 0
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 11,
+        "fontWeight": "normal",
+        "color": "#374151"
+      },
+      "encoding": {
+        "x": {
+          "value": 500
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": null
+        },
+        "text": {
+          "field": "text"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.met === 1"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "max",
+              "field": "criterion_total",
+              "as": "n"
+            }
+          ],
+          "groupby": [
+            "criterion"
+          ]
+        },
+        {
+          "calculate": "datum.n + (datum.n === 1 ? ' property' : '')",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#52514e",
+        "y": {
+          "expr": "height + 6"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "criterion",
+          "type": "ordinal"
+        },
+        "text": {
+          "field": "n",
+          "type": "quantitative"
+        },
+        "y": null
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "fontSize": 11,
+        "color": "#52514e",
+        "x": -6,
+        "y": {
+          "expr": "height + 6"
+        },
+        "text": "Properties meeting it"
+      },
+      "encoding": {
+        "x": null,
+        "y": null
+      }
     }
   ],
-
   "config": {
-    "font": "Helvetica Neue, Arial, sans-serif",
-
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
     "title": {
       "fontSize": 16,
       "subtitleFontSize": 12,
       "anchor": "start"
     },
-
     "axis": {
       "labelFontSize": 11,
       "titleFontSize": 12,
@@ -204,7 +397,6 @@
       "domain": false,
       "ticks": false
     },
-
     "view": {
       "stroke": null
     }

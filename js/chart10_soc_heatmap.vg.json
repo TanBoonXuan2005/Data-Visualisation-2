@@ -1,20 +1,304 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
-  "title": "",
-
-  "width": 0,
-  "height": 0,
-
-  "data": {
-    "url": "data/"
+  "title": {
+    "text": "UNESCO's concerns have moved from management to climate change and infrastructure",
+    "subtitle": [
+      "Share of each decade's State of Conservation reports that raise each type of threat",
+      "(88 reports on 14 Australian World Heritage properties, 1983 to 2026). Hover for exact counts."
+    ]
   },
-
+  "data": {
+    "url": "data/soc_factors_australia.csv"
+  },
   "transform": [
-    
+    {
+      "calculate": "floor(toNumber(datum.year) / 10) * 10",
+      "as": "decade_start"
+    },
+    {
+      "calculate": "datum.decade_start + 's'",
+      "as": "decade"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "distinct",
+          "field": "soc_id",
+          "as": "decade_reports"
+        }
+      ],
+      "groupby": [
+        "decade"
+      ]
+    },
+    {
+      "filter": "datum.primary_factor !== 'None identified'"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "distinct",
+          "field": "soc_id",
+          "as": "reports"
+        }
+      ],
+      "groupby": [
+        "threat_group",
+        "primary_factor",
+        "decade",
+        "decade_start",
+        "decade_reports"
+      ]
+    },
+    {
+      "impute": "reports",
+      "key": "decade",
+      "groupby": [
+        "threat_group",
+        "primary_factor"
+      ],
+      "value": 0
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "decade_reports",
+          "as": "n_reports"
+        },
+        {
+          "op": "max",
+          "field": "decade_start",
+          "as": "d_start"
+        }
+      ],
+      "groupby": [
+        "decade"
+      ]
+    },
+    {
+      "calculate": "datum.reports / datum.n_reports",
+      "as": "share"
+    },
+    {
+      "calculate": "datum.decade + ' (' + datum.n_reports + ')'",
+      "as": "decade_label"
+    },
+    {
+      "calculate": "datum.share * datum.d_start",
+      "as": "weighted_decade"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "weighted_decade",
+          "as": "sum_weighted"
+        },
+        {
+          "op": "sum",
+          "field": "share",
+          "as": "sum_share"
+        }
+      ],
+      "groupby": [
+        "threat_group"
+      ]
+    },
+    {
+      "calculate": "datum.sum_weighted / datum.sum_share",
+      "as": "typical_decade"
+    }
   ],
-
+  "config": {
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start",
+      "offset": 10
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "titleColor": "#52514e",
+      "labelColor": "#52514e"
+    },
+    "view": {
+      "stroke": null
+    }
+  },
+  "width": 420,
+  "height": {
+    "step": 28
+  },
   "encoding": {
-
-  }
+    "y": {
+      "field": "threat_group",
+      "type": "nominal",
+      "title": null,
+      "sort": {
+        "field": "typical_decade",
+        "op": "min",
+        "order": "ascending"
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 8,
+        "labelLimit": 220
+      }
+    },
+    "x": {
+      "field": "decade_label",
+      "type": "ordinal",
+      "title": "Decade (number of reports)",
+      "sort": {
+        "field": "d_start",
+        "op": "min",
+        "order": "ascending"
+      },
+      "axis": {
+        "orient": "top",
+        "labelAngle": 0,
+        "domain": false,
+        "ticks": false,
+        "titlePadding": 8
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "#ffffff",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "test": "datum.share === 0",
+            "value": "#f3f2ee"
+          },
+          "field": "share",
+          "type": "quantitative",
+          "title": "Share of reports",
+          "scale": {
+            "domain": [
+              0,
+              0.175,
+              0.35,
+              0.525,
+              0.7
+            ],
+            "range": [
+              "#cde2fb",
+              "#86b6ef",
+              "#3987e5",
+              "#1c5cab",
+              "#0d366b"
+            ]
+          },
+          "legend": {
+            "format": "%",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 200,
+            "values": [
+              0,
+              0.35,
+              0.7
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "threat_group",
+            "type": "nominal",
+            "title": "Threat"
+          },
+          {
+            "field": "primary_factor",
+            "type": "nominal",
+            "title": "UNESCO factor group"
+          },
+          {
+            "field": "decade",
+            "type": "nominal",
+            "title": "Decade"
+          },
+          {
+            "field": "reports",
+            "type": "quantitative",
+            "title": "Reports raising it"
+          },
+          {
+            "field": "n_reports",
+            "type": "quantitative",
+            "title": "All reports that decade"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share",
+            "format": ".0%"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.share >= 0.4"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "text": {
+          "field": "share",
+          "type": "quantitative",
+          "format": ".0%"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.decade === '2020s'"
+        },
+        {
+          "calculate": "{'Management, staff and funding': 'Raised in more than half of all reports in the 1990s and 2000s', 'Mining and other extraction': 'Kakadu: mining raised in all 12 reports, 1986 to 2005', 'Climate change and storms': 'Great Barrier Reef: raised in every report since 2011', 'Energy and water infrastructure': 'Reef energy facilities and Blue Mountains water infrastructure', 'Bushfires and erosion': 'Gondwana Rainforests and Blue Mountains reports since 2021'}[datum.threat_group]",
+          "as": "note"
+        },
+        {
+          "filter": "isValid(datum.note)"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 11,
+        "color": "#374151"
+      },
+      "encoding": {
+        "text": {
+          "field": "note"
+        },
+        "x": {
+          "value": 436
+        }
+      }
+    }
+  ]
 }

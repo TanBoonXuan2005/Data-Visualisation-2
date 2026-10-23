@@ -1,0 +1,326 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Coral cover is above average in the northern and central reef, but below it in the south",
+    "subtitle": [
+      "Average hard coral cover on Great Barrier Reef reefs surveyed by AIMS (Aug 2025 to Jun 2026),",
+      "compared with 2025 and with each region's long-term average. Hover for the survey ranges."
+    ]
+  },
+  "width": 520,
+  "height": {
+    "step": 52
+  },
+  "data": {
+    "url": "data/gbr_coral_cover_2026.csv"
+  },
+  "transform": [
+    {
+      "calculate": "indexof(['Northern', 'Central', 'Southern'], datum.region)",
+      "as": "region_order"
+    },
+    {
+      "calculate": "datum.region",
+      "as": "region_label"
+    },
+    {
+      "calculate": "datum.cover_2026 - datum.long_term_average",
+      "as": "gap"
+    },
+    {
+      "calculate": "format(abs(datum.gap), '.1f') + ' points ' + (datum.gap >= 0 ? 'above' : 'below') + ' its long-term average'",
+      "as": "gap_note"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "region_label",
+      "type": "nominal",
+      "title": null,
+      "sort": {
+        "field": "region_order",
+        "op": "min",
+        "order": "ascending"
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 10
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 3,
+        "color": "#d3d2cb"
+      },
+      "encoding": {
+        "x": {
+          "field": "long_term_average",
+          "type": "quantitative",
+          "title": "Hard coral cover",
+          "scale": {
+            "domain": [
+              15,
+              40
+            ]
+          },
+          "axis": {
+            "labelExpr": "datum.value + '%'",
+            "values": [
+              15,
+              20,
+              25,
+              30,
+              35,
+              40
+            ],
+            "gridColor": "#eeedea",
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "x2": {
+          "field": "cover_2026"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "thickness": 2.5,
+        "size": 22,
+        "color": "#898781"
+      },
+      "encoding": {
+        "x": {
+          "field": "long_term_average",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "region_label",
+            "title": "Region"
+          },
+          {
+            "field": "long_term_average",
+            "title": "Long-term average (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "lta_ci_low",
+            "title": "Range low (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "lta_ci_high",
+            "title": "Range high (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 70,
+        "color": "#b4b2a9",
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "cover_2025",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "region_label",
+            "title": "Region"
+          },
+          {
+            "field": "cover_2025",
+            "title": "2025 cover (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 150,
+        "color": "#1f2a30",
+        "opacity": 1,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "cover_2026",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "region_label",
+            "title": "Region"
+          },
+          {
+            "field": "cover_2026",
+            "title": "2025/26 cover (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "cover_2026_ci_low",
+            "title": "Range low (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "cover_2026_ci_high",
+            "title": "Range high (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "cover_2025",
+            "title": "2025 cover (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "long_term_average",
+            "title": "Long-term average (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -12,
+        "fontSize": 11,
+        "color": "#1f2a30",
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "field": "cover_2026",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "cover_2026",
+          "type": "quantitative",
+          "format": ".1f"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.region === 'Northern'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -14,
+        "fontSize": 11,
+        "color": "#52514e"
+      },
+      "encoding": {
+        "x": {
+          "field": "long_term_average",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "long-term average"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.region === 'Northern'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "top",
+        "dy": 14,
+        "fontSize": 11,
+        "color": "#52514e"
+      },
+      "encoding": {
+        "x": {
+          "field": "cover_2025",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "2025"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.region === 'Northern'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "top",
+        "dy": 14,
+        "fontSize": 11,
+        "color": "#1f2a30"
+      },
+      "encoding": {
+        "x": {
+          "field": "cover_2026",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "2025/26"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 12,
+        "color": "#374151"
+      },
+      "encoding": {
+        "x": {
+          "value": 536
+        },
+        "text": {
+          "field": "gap_note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+    "title": {
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "anchor": "start",
+      "offset": 10
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    },
+    "view": {
+      "stroke": null
+    }
+  }
+}

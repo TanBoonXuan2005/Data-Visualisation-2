@@ -1,19 +1,22 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-
   "title": {
     "text": "How large are Australia's World Heritage properties?",
-    "subtitle": "Symbol sizes are adjusted for visibility; colour shows heritage category. Hover for exact area."
+    "subtitle": "Symbol size shows listed area in five classes; colour shows the category. Hover for the exact area."
   },
-
   "width": 600,
   "height": 430,
-
   "projection": {
-    "type": "mercator"
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0
+    ]
   },
-
   "layer": [
     {
       "data": {
@@ -23,7 +26,6 @@
           "feature": "australia_states_2026"
         }
       },
-
       "mark": {
         "type": "geoshape",
         "fill": "#eeeeee",
@@ -31,52 +33,62 @@
         "strokeWidth": 1
       }
     },
-
     {
       "data": {
         "url": "data/world_heritage_australia.csv"
       },
-
       "transform": [
         {
           "filter": "datum.name !== 'Heard and McDonald Islands' && datum.name !== 'Macquarie Island'"
+        },
+        {
+          "calculate": "datum.area_ha < 10000 ? 'Under 10,000 ha' : datum.area_ha < 100000 ? '10,000 to 100,000 ha' : datum.area_ha < 1000000 ? '100,000 ha to 1 million' : datum.area_ha < 10000000 ? '1 to 10 million ha' : 'Over 10 million ha'",
+          "as": "size_class"
         }
       ],
-
       "mark": {
         "type": "circle",
         "stroke": "white",
         "strokeWidth": 0.8,
-        "opacity": 0.75
+        "opacity": 0.85
       },
-
       "encoding": {
         "longitude": {
           "field": "lon",
           "type": "quantitative"
         },
-
         "latitude": {
           "field": "lat",
           "type": "quantitative"
         },
-
         "size": {
-          "field": "area_ha",
-          "type": "quantitative",
-          "title": "Listed area (ha)",
+          "field": "size_class",
+          "type": "ordinal",
+          "title": "Listed area",
           "scale": {
-            "type": "sqrt",
-            "zero": false,
-            "range": [40, 1400]
+            "domain": [
+              "Under 10,000 ha",
+              "10,000 to 100,000 ha",
+              "100,000 ha to 1 million",
+              "1 to 10 million ha",
+              "Over 10 million ha"
+            ],
+            "range": [
+              40,
+              110,
+              240,
+              480,
+              1300
+            ],
+            "type": "ordinal"
           },
           "legend": {
-            "title": "Listed area (ha)",
-            "values": [10, 10000, 1000000, 30000000],
-            "labelExpr": "datum.value === 10 ? '10 ha' : datum.value === 10000 ? '10k ha' : datum.value === 1000000 ? '1M ha' : '30M ha'"
+            "symbolType": "circle",
+            "symbolFillColor": "#898781",
+            "symbolStrokeWidth": 0,
+            "labelFontSize": 11
           }
         },
-
         "color": {
           "field": "category",
           "type": "nominal",
@@ -88,13 +100,12 @@
               "Mixed"
             ],
             "range": [
-              "#1f77b4",
-              "#2ca02c",
-              "#ff7f0e"
+              "#2a78d6",
+              "#1baf7a",
+              "#eda100"
             ]
           }
         },
-
         "tooltip": [
           {
             "field": "name",
@@ -121,12 +132,10 @@
         ]
       }
     },
-
     {
       "data": {
         "url": "data/world_heritage_australia.csv"
       },
-
       "transform": [
         {
           "filter": "toNumber(datum.unesco_id) === 154 || toNumber(datum.unesco_id) === 147 || toNumber(datum.unesco_id) === 447"
@@ -136,7 +145,6 @@
           "as": "map_label"
         }
       ],
-
       "mark": {
         "type": "text",
         "align": "left",
@@ -147,18 +155,15 @@
         "fontWeight": "bold",
         "color": "#263238"
       },
-
       "encoding": {
         "longitude": {
           "field": "lon",
           "type": "quantitative"
         },
-
         "latitude": {
           "field": "lat",
           "type": "quantitative"
         },
-
         "text": {
           "field": "map_label",
           "type": "nominal"
@@ -166,20 +171,16 @@
       }
     }
   ],
-
   "config": {
-    "font": "Helvetica Neue, Arial, sans-serif",
-
+    "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
     "title": {
       "fontSize": 16,
       "subtitleFontSize": 12,
       "anchor": "start"
     },
-
     "axis": {
       "labelFontSize": 12
     },
-
     "view": {
       "stroke": null
     }

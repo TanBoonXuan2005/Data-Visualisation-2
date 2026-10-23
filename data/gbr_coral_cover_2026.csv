@@ -1,0 +1,4 @@
+region,long_term_average,lta_ci_low,lta_ci_high,cover_2025,cover_2026,cover_2026_ci_low,cover_2026_ci_high
+Northern,27.0,25.0,29.3,30.0,35.1,30.9,38.8
+Central,20.0,18.9,21.4,28.6,31.6,28.3,35.1
+Southern,29.3,27.5,31.3,26.9,26.4,22.9,30.2

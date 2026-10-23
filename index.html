@@ -27,8 +27,8 @@
       Australia's heritage spans natural landscapes, historic places and
       Indigenous culture. This visualisation examines datasets covering
       126 National Heritage places and 21 Australian World Heritage
-      properties. Explore where they are, what makes them significant
-      and how people experience them.
+      properties. Explore where they are, what makes them significant,
+      how people experience them and what threatens them.
     </p>
 
     <section>
@@ -41,18 +41,20 @@
           </div>
 
           <p class="chart-insight">
-            Of the 126 National Heritage places in the dataset, 119 are
-            shown on this map. Historic places form the largest group,
-            with 65 plotted sites, compared with 34 natural and
-            20 Indigenous places.
+            Historic places cluster in the south-east: 54 of the 65 shown
+            are in New South Wales, Victoria, Tasmania or the Australian
+            Capital Territory (ACT), and 23 lie within 15 km of central
+            Melbourne or Sydney. Natural places spread far more widely,
+            with only 11 of 34 in those four jurisdictions.
           </p>
 
           <p class="chart-source">
             Source: Australian Government, National Heritage List
             Spatial Database. Each point represents one listed place,
             rather than its complete geographic boundary.
-            Remote and offshore locations may fall outside
-            the mainland-focused map view.
+            Six places in external territories, such as Mawson's Huts in
+            Antarctica, and Macquarie Island are not shown, so 119 of the
+            126 places appear.
           </p>
         </div>
 
@@ -62,10 +64,12 @@
           </div>
 
           <p class="chart-insight">
-            The ACT has the highest heritage density, with approximately
-            212 listed places per 100,000 km². Tasmania has around 19
-            and Victoria around 13. The ACT's small land area
-            contributes to its exceptionally high density.
+            Measured against land area, the ACT stands out with about 212
+            listed places per 100,000 km², because four of its five places,
+            including Old Parliament House and the Australian War Memorial,
+            are national institutions in Canberra. Tasmania (19) and
+            Victoria (13) follow; Queensland, Western Australia and the
+            Northern Territory each have fewer than one.
           </p>
 
           <p class="chart-source">
@@ -84,13 +88,19 @@
 
         <div>
           <p class="chart-insight">
-            New South Wales and Victoria lead with 30 places each.
-            Together they hold 59 of the 126 listed places, close to half.
+            Historic places dominate the south-east: 23 of Victoria's 30
+            places and four of the ACT's five are historic. In Western
+            Australia, Queensland and the Northern Territory, at least
+            three in four places are natural or Indigenous.
           </p>
 
           <p class="chart-source">
             Places that span more than one state or territory are counted
-            in each, so the bars add up to 130 rather than 126.
+            in each, so the columns add up to 130 rather than 126.
+            ACT: Australian Capital Territory; NSW: New South Wales;
+            NT: Northern Territory; QLD: Queensland; SA: South Australia;
+            TAS: Tasmania; VIC: Victoria; WA: Western Australia;
+            Ext.: external territories.
           </p>
         </div>
       </div>
@@ -138,14 +148,15 @@
         natural or mixed. Five of the six inscribed since 2004 are cultural,
         including two Aboriginal cultural landscapes, Budj Bim (2019) and
         Murujuga (2025). Recognition can also change after inscription:
-        Kakadu was extended in 1987 and 1992, and Uluṟu-Kata Tjuṯa was
-        recognised for its cultural values in 1994.
+        Kakadu was extended in 1987 and 1992, the Tasmanian Wilderness
+        in 1989 and the Gondwana Rainforests in 1994, and Uluṟu-Kata
+        Tjuṯa was recognised for its cultural values in 1994.
       </p>
 
       <p class="chart-source">
         Source: UNESCO World Heritage Centre.
-        Additional dates reflect the selected UNESCO dataset fields
-        and do not represent a complete history of all decisions.
+        Diamonds show the significant boundary modifications recorded
+        by UNESCO; minor boundary changes are not shown.
       </p>
     </section>
 
@@ -170,9 +181,8 @@
       </p>
 
       <p class="chart-insight">
-        Among these World Heritage properties, Kakadu and
-        Uluṟu-Kata Tjuṯa attract visitors from across the world.
-        Their annual visitor numbers reveal different recovery patterns.
+        Parks Australia reports yearly visitor numbers for two of the
+        labelled parks, Kakadu and Uluṟu-Kata Tjuṯa.
       </p>
 
       <div class="chart-panel chart-panel-visitors">
@@ -181,11 +191,10 @@
 
       <p class="chart-insight">
         The parks followed different recovery paths. In 2020–21,
-        Kakadu received 173,584 visitors while Uluṟu received
-        122,523. From 2022–23 to 2024–25, Uluṟu's visitation
-        increased by 10.6%, while Kakadu's declined by 8.0%.
-        Uluṟu's 2018–19 total of 395,338 was itself 20%
-        higher than the previous year.
+        Kakadu rose to 173,584 visitors while Uluṟu fell to 122,523.
+        Since 2022–23, Uluṟu is up 11% and Kakadu down 8%. By 2024–25,
+        Uluṟu had reached 267,363 visitors, still below its 2018–19
+        figure of 395,338, which was itself up 20% on the year before.
       </p>
 
       <p class="chart-source">
@@ -194,6 +203,80 @@
         the author. Financial years run from July to June.
         Visitor-counting methods differ between the two parks,
         so comparisons focus on trends within each park.
+      </p>
+    </section>
+
+    <section>
+      <h2>What threatens Australia's World Heritage?</h2>
+
+      <p class="chart-insight">
+        When a World Heritage property is under threat, UNESCO asks the
+        government for a State of Conservation report. Since 1983 it has
+        reviewed 14 of Australia's 21 properties in 88 reports. All 14 are
+        natural or mixed properties; none of the five purely cultural
+        properties has been reviewed.
+      </p>
+
+      <div class="chart-panel">
+        <div id="soc-threat-sankey"></div>
+      </div>
+
+      <p class="chart-insight">
+        Management problems, such as missing plans or funding, were raised
+        for 10 properties, and mining or other extraction for seven, from
+        Kakadu to the Blue Mountains. Climate change appears for only two,
+        and 11 of its 13 reports concern the Great Barrier Reef.
+      </p>
+
+      <p class="chart-source">
+        Source: UNESCO World Heritage Centre, State of Conservation reports
+        for Australia, 1983 to 2026. Threats are the "factors affecting the
+        property" UNESCO lists in each report, grouped into its categories
+        with simplified names. The 1997 report on Uluṟu-Kata Tjuṯa recorded
+        no specific threat.
+      </p>
+
+      <div class="chart-panel">
+        <div id="soc-threat-heatmap"></div>
+      </div>
+
+      <p class="chart-insight">
+        In the 1990s and 2000s, more than half of all reports raised
+        management problems. In the 2020s that fell to one report in 12,
+        while transport and energy infrastructure (8 of 12 reports each),
+        climate change and bushfires (5 of 12 each) took over.
+      </p>
+
+      <div class="chart-panel">
+        <div id="soc-threat-treemap"></div>
+      </div>
+
+      <p class="chart-insight">
+        Counted by how often UNESCO has listed them, climate threats come
+        first (46 listings), but 44 of those are for the Great Barrier Reef.
+        Mining, listed 36 times, is the most frequent single threat.
+        Seventeen of the 35 types of threat were still being listed in
+        reports from 2020 onwards.
+      </p>
+
+      <div class="chart-panel">
+        <div id="gbr-coral-cover"></div>
+      </div>
+
+      <p class="chart-insight">
+        The reef's latest survey brings some good news. Coral cover in the
+        northern and central reef is above its long-term average, and the
+        north is starting to recover from the 2024 mass bleaching. In the
+        south, cover is 26.4%, 2.9 percentage points below its average.
+      </p>
+
+      <p class="chart-source">
+        Source: Australian Institute of Marine Science (AIMS), Annual
+        Summary Report of Coral Reef Condition 2025/26; 121 reefs surveyed
+        between August 2025 and June 2026. Hard coral cover is the share of
+        the seabed covered by living hard coral. Because only a sample of
+        reefs is surveyed, each figure is an estimate; the survey ranges
+        shown on hover are AIMS's margins of error.
       </p>
     </section>
 
@@ -233,10 +316,23 @@
         <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2023-24.pdf">2023–24</a> and
         <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2024-25.pdf">2024–25</a>.
         <a href="https://www.dcceew.gov.au/sites/default/files/documents/80520.pdf">DCCEEW FOI 80520</a>.
+        Uluṟu's 20% rise in 2018–19, as stated by Parks Australia:
+        <a href="https://www.thenewdaily.com.au/news/state/nt/2019/07/16/uluru-closure-visitor-numbers">The New Daily, 16 July 2019</a>.
         Events:
         <a href="https://parksaustralia.gov.au/news/parks-australia-announces-temporary-closures/">Parks Australia temporary closures (March 2020)</a>,
         <a href="https://uluru.gov.au/discover/history/uluru-climb-closure/">Uluṟu climb closure</a> and
         <a href="https://uluru.gov.au/news/staged-re-opening-uluru-kata-tjuta-national-park/">2020 park reopening</a>.
+      </li>
+      <li>
+        Threats to World Heritage properties: UNESCO World Heritage Centre,
+        State of Conservation Information System.
+        <a href="https://whc.unesco.org/en/soc/">whc.unesco.org/en/soc</a>
+      </li>
+
+      <li>
+        Coral cover: Australian Institute of Marine Science, Annual Summary
+        Report of Coral Reef Condition 2025/26.
+        <a href="https://aims.gov.au/monitoring-great-barrier-reef/gbr-condition-summary-2025-26">aims.gov.au/monitoring-great-barrier-reef/gbr-condition-summary-2025-26</a>
       </li>
     </ul>
 
@@ -264,7 +360,7 @@
 
     vegaEmbed(
       "#state-bar-chart",
-      "js/chart03_state_bar.vg.json",
+      "js/chart03_state_marimekko.vg.json",
       {
         actions: false
       }
@@ -297,6 +393,30 @@
     vegaEmbed(
       "#kakadu-uluru-visitors-line",
       "js/chart08_kakadu_uluru_visitors_line.vg.json",
+      { actions: false }
+    );
+
+    vegaEmbed(
+      "#soc-threat-sankey",
+      "js/chart09_soc_threat_sankey.vg.json",
+      { actions: false }
+    );
+
+    vegaEmbed(
+      "#soc-threat-heatmap",
+      "js/chart10_soc_heatmap.vg.json",
+      { actions: false }
+    );
+
+    vegaEmbed(
+      "#soc-threat-treemap",
+      "js/chart11_soc_threat_treemap.vg.json",
+      { actions: false }
+    );
+
+    vegaEmbed(
+      "#gbr-coral-cover",
+      "js/chart12_gbr_coral_dumbbell.vg.json",
       { actions: false }
     );
   </script>

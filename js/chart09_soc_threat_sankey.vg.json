@@ -1,0 +1,690 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Sankey diagram linking Australian World Heritage properties to the types of threat raised in UNESCO State of Conservation reports, 1983 to 2026. Band thickness = number of reports that raised the threat for that property.",
+  "width": 515,
+  "height": 520,
+  "padding": 5,
+  "autosize": "pad",
+  "title": {
+    "text": "Management and mining concerns reach the most properties; climate change is mostly a reef issue",
+    "subtitle": [
+      "Each band links a property to a type of threat. Its thickness is the number of UNESCO State of Conservation",
+      "reports (1983 to 2026) that raised that threat for that property. Hover over a property or threat to trace it."
+    ],
+    "anchor": "start",
+    "frame": "bounds",
+    "offset": 12
+  },
+  "signals": [
+    {
+      "name": "nodeWidth",
+      "value": 12
+    },
+    {
+      "name": "gap",
+      "value": 9
+    },
+    {
+      "name": "activeProperty",
+      "value": null,
+      "on": [
+        {
+          "events": "@source_nodes:mouseover, @source_labels:mouseover",
+          "update": "datum.property"
+        },
+        {
+          "events": "@bands:mouseover",
+          "update": "datum.property"
+        },
+        {
+          "events": "@source_nodes:mouseout, @source_labels:mouseout, @bands:mouseout",
+          "update": "null"
+        }
+      ]
+    },
+    {
+      "name": "activeThreat",
+      "value": null,
+      "on": [
+        {
+          "events": "@target_nodes:mouseover, @target_labels:mouseover",
+          "update": "datum.threat_group"
+        },
+        {
+          "events": "@target_nodes:mouseout, @target_labels:mouseout",
+          "update": "null"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "properties",
+      "url": "data/world_heritage_australia.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "raw",
+      "url": "data/soc_factors_australia.csv",
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.primary_factor !== 'None identified'"
+        }
+      ]
+    },
+    {
+      "name": "report_counts",
+      "url": "data/soc_reports_australia.csv",
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "unesco_id"
+          ],
+          "ops": [
+            "count"
+          ],
+          "as": [
+            "n_reports"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "links_base",
+      "source": "raw",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "unesco_id",
+            "property",
+            "threat_group",
+            "primary_factor"
+          ],
+          "ops": [
+            "distinct"
+          ],
+          "fields": [
+            "soc_id"
+          ],
+          "as": [
+            "reports"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "source_table",
+      "source": "links_base",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "unesco_id",
+            "property"
+          ],
+          "ops": [
+            "sum",
+            "count"
+          ],
+          "fields": [
+            "reports",
+            null
+          ],
+          "as": [
+            "total",
+            "n_threats"
+          ]
+        },
+        {
+          "type": "lookup",
+          "from": "properties",
+          "key": "unesco_id",
+          "fields": [
+            "unesco_id"
+          ],
+          "values": [
+            "category"
+          ]
+        },
+        {
+          "type": "lookup",
+          "from": "report_counts",
+          "key": "unesco_id",
+          "fields": [
+            "unesco_id"
+          ],
+          "values": [
+            "n_reports"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "short_name",
+          "expr": "{'Great Barrier Reef': 'Great Barrier Reef', 'Tasmanian Wilderness': 'Tasmanian Wilderness', 'Kakadu National Park': 'Kakadu', 'Wet Tropics of Queensland': 'Wet Tropics of Queensland', 'Greater Blue Mountains Area': 'Greater Blue Mountains', 'Macquarie Island': 'Macquarie Island', 'Purnululu National Park': 'Purnululu', 'Heard and McDonald Islands': 'Heard and McDonald Islands', 'Shark Bay, Western Australia': 'Shark Bay', 'K’gari': 'K’gari (Fraser Island)', 'Gondwana Rainforests of Australia': 'Gondwana Rainforests', 'Willandra Lakes Region': 'Willandra Lakes', 'Australian Fossil Mammal Sites (Riversleigh / Naracoorte)': 'Fossil Mammal Sites'}[datum.property] || datum.property"
+        },
+        {
+          "type": "window",
+          "sort": {
+            "field": [
+              "total",
+              "property"
+            ],
+            "order": [
+              "descending",
+              "ascending"
+            ]
+          },
+          "ops": [
+            "row_number",
+            "sum"
+          ],
+          "fields": [
+            null,
+            "total"
+          ],
+          "as": [
+            "rank",
+            "running"
+          ]
+        },
+        {
+          "type": "joinaggregate",
+          "ops": [
+            "sum",
+            "count"
+          ],
+          "fields": [
+            "total",
+            null
+          ],
+          "as": [
+            "grand_total",
+            "n_nodes"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "k",
+          "expr": "(height - gap * (datum.n_nodes - 1)) / datum.grand_total"
+        },
+        {
+          "type": "formula",
+          "as": "y0",
+          "expr": "(datum.running - datum.total) * datum.k + (datum.rank - 1) * gap"
+        },
+        {
+          "type": "formula",
+          "as": "y1",
+          "expr": "datum.y0 + datum.total * datum.k"
+        }
+      ]
+    },
+    {
+      "name": "target_table",
+      "source": "links_base",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "threat_group",
+            "primary_factor"
+          ],
+          "ops": [
+            "sum",
+            "distinct"
+          ],
+          "fields": [
+            "reports",
+            "property"
+          ],
+          "as": [
+            "total",
+            "n_properties"
+          ]
+        },
+        {
+          "type": "window",
+          "sort": {
+            "field": [
+              "total",
+              "threat_group"
+            ],
+            "order": [
+              "descending",
+              "ascending"
+            ]
+          },
+          "ops": [
+            "row_number",
+            "sum"
+          ],
+          "fields": [
+            null,
+            "total"
+          ],
+          "as": [
+            "rank",
+            "running"
+          ]
+        },
+        {
+          "type": "joinaggregate",
+          "ops": [
+            "sum",
+            "count"
+          ],
+          "fields": [
+            "total",
+            null
+          ],
+          "as": [
+            "grand_total",
+            "n_nodes"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "k",
+          "expr": "(height - gap * (datum.n_nodes - 1)) / datum.grand_total"
+        },
+        {
+          "type": "formula",
+          "as": "y0",
+          "expr": "(datum.running - datum.total) * datum.k + (datum.rank - 1) * gap"
+        },
+        {
+          "type": "formula",
+          "as": "y1",
+          "expr": "datum.y0 + datum.total * datum.k"
+        }
+      ]
+    },
+    {
+      "name": "links",
+      "source": "links_base",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "source_table",
+          "key": "property",
+          "fields": [
+            "property"
+          ],
+          "values": [
+            "y0",
+            "rank",
+            "k",
+            "short_name",
+            "n_reports"
+          ],
+          "as": [
+            "src_y0",
+            "src_rank",
+            "k",
+            "short_name",
+            "n_reports"
+          ]
+        },
+        {
+          "type": "lookup",
+          "from": "target_table",
+          "key": "threat_group",
+          "fields": [
+            "threat_group"
+          ],
+          "values": [
+            "y0",
+            "rank"
+          ],
+          "as": [
+            "tgt_y0",
+            "tgt_rank"
+          ]
+        },
+        {
+          "type": "window",
+          "groupby": [
+            "property"
+          ],
+          "sort": {
+            "field": "tgt_rank",
+            "order": "ascending"
+          },
+          "ops": [
+            "sum"
+          ],
+          "fields": [
+            "reports"
+          ],
+          "as": [
+            "src_running"
+          ]
+        },
+        {
+          "type": "window",
+          "groupby": [
+            "threat_group"
+          ],
+          "sort": {
+            "field": "src_rank",
+            "order": "ascending"
+          },
+          "ops": [
+            "sum"
+          ],
+          "fields": [
+            "reports"
+          ],
+          "as": [
+            "tgt_running"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "band",
+          "expr": "datum.reports * datum.k"
+        },
+        {
+          "type": "formula",
+          "as": "sy",
+          "expr": "datum.src_y0 + (datum.src_running - datum.reports) * datum.k + datum.band / 2"
+        },
+        {
+          "type": "formula",
+          "as": "ty",
+          "expr": "datum.tgt_y0 + (datum.tgt_running - datum.reports) * datum.k + datum.band / 2"
+        },
+        {
+          "type": "formula",
+          "as": "sx",
+          "expr": "nodeWidth"
+        },
+        {
+          "type": "formula",
+          "as": "tx",
+          "expr": "width - nodeWidth"
+        },
+        {
+          "type": "linkpath",
+          "orient": "horizontal",
+          "shape": "diagonal",
+          "sourceX": "sx",
+          "sourceY": "sy",
+          "targetX": "tx",
+          "targetY": "ty"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "category",
+      "type": "ordinal",
+      "domain": [
+        "Natural",
+        "Mixed"
+      ],
+      "range": [
+        "#1baf7a",
+        "#eda100"
+      ]
+    }
+  ],
+  "legends": [
+    {
+      "fill": "category",
+      "title": "Property category",
+      "orient": "none",
+      "direction": "horizontal",
+      "symbolType": "square",
+      "titleFontSize": 11,
+      "labelFontSize": 11,
+      "titleColor": "#52514e",
+      "labelColor": "#374151",
+      "legendX": -168,
+      "legendY": {
+        "signal": "height + 16"
+      }
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "name": "bands",
+      "from": {
+        "data": "links"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "field": "path"
+          },
+          "strokeWidth": {
+            "signal": "max(1, datum.band - 1)"
+          },
+          "stroke": {
+            "signal": "(activeProperty && datum.property === activeProperty) || (activeThreat && datum.threat_group === activeThreat) ? '#52514e' : '#b4b2a9'"
+          },
+          "strokeOpacity": {
+            "signal": "(activeProperty || activeThreat) ? ((datum.property === activeProperty || datum.threat_group === activeThreat) ? 0.85 : 0.12) : 0.45"
+          },
+          "tooltip": {
+            "signal": "{'Property': datum.short_name, 'Threat': datum.threat_group, 'UNESCO category': datum.primary_factor, 'Reports raising it': datum.reports + ' of ' + datum.n_reports}"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "name": "source_nodes",
+      "from": {
+        "data": "source_table"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "value": 0
+          },
+          "x2": {
+            "signal": "nodeWidth"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "scale": "category",
+            "field": "category"
+          },
+          "tooltip": {
+            "signal": "{'Property': datum.property, 'World Heritage category': datum.category, 'UNESCO reports': datum.n_reports, 'Types of threat raised': datum.n_threats}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "source_labels",
+      "from": {
+        "data": "source_table"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "value": -6
+          },
+          "y": {
+            "signal": "(datum.y0 + datum.y1) / 2"
+          },
+          "align": {
+            "value": "right"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#0b0b0b"
+          },
+          "fontWeight": {
+            "signal": "datum.property === activeProperty ? 'bold' : 'normal'"
+          },
+          "text": {
+            "signal": "datum.short_name + ' (' + datum.n_reports + ')'"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "name": "target_nodes",
+      "from": {
+        "data": "target_table"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "width - nodeWidth"
+          },
+          "x2": {
+            "signal": "width"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "value": "#52514e"
+          },
+          "tooltip": {
+            "signal": "{'Threat': datum.threat_group, 'UNESCO category': datum.primary_factor, 'Properties affected': datum.n_properties}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "target_labels",
+      "from": {
+        "data": "target_table"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "width + 6"
+          },
+          "y": {
+            "signal": "(datum.y0 + datum.y1) / 2"
+          },
+          "align": {
+            "value": "left"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#0b0b0b"
+          },
+          "fontWeight": {
+            "signal": "datum.threat_group === activeThreat ? 'bold' : 'normal'"
+          },
+          "text": {
+            "signal": "datum.threat_group + ' (' + datum.n_properties + ' ' + (datum.n_properties === 1 ? 'property' : 'properties') + ')'"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {
+            "value": -6
+          },
+          "y": {
+            "value": -2
+          },
+          "align": {
+            "value": "right"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#52514e"
+          },
+          "text": {
+            "value": "Property (number of reports)"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "width + 6"
+          },
+          "y": {
+            "value": -2
+          },
+          "align": {
+            "value": "left"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#52514e"
+          },
+          "text": {
+            "value": "Type of threat (properties affected)"
+          }
+        }
+      }
+    }
+  ],
+  "config": {
+    "text": {
+      "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif"
+    },
+    "title": {
+      "font": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+      "fontSize": 16,
+      "subtitleFontSize": 12,
+      "subtitleFont": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+      "subtitleColor": "#0b0b0b"
+    },
+    "legend": {
+      "labelFont": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif",
+      "titleFont": "Hanken Grotesk, Helvetica Neue, Arial, sans-serif"
+    }
+  }
+}
