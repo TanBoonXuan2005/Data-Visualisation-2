@@ -125,8 +125,8 @@
       "titleColor": "#52514e"
     },
     "legend": {
-      "labelFontSize": 11,
-      "titleFontSize": 11,
+      "labelFontSize": 12,
+      "titleFontSize": 12,
       "titleColor": "#52514e",
       "labelColor": "#52514e"
     },
@@ -260,7 +260,7 @@
       ],
       "mark": {
         "type": "text",
-        "fontSize": 11,
+        "fontSize": 12,
         "fontWeight": "bold",
         "color": "#ffffff"
       },
@@ -288,7 +288,7 @@
       "mark": {
         "type": "text",
         "align": "left",
-        "fontSize": 11,
+        "fontSize": 12,
         "color": "#374151"
       },
       "encoding": {

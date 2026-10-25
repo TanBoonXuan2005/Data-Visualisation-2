@@ -7,9 +7,9 @@
       "compared with 2025 and with each region's long-term average. Hover for the survey ranges."
     ]
   },
-  "width": 520,
+  "width": 560,
   "height": {
-    "step": 52
+    "step": 60
   },
   "data": {
     "url": "data/gbr_coral_cover_2026.csv"
@@ -125,7 +125,7 @@
     {
       "mark": {
         "type": "circle",
-        "size": 70,
+        "size": 85,
         "color": "#b4b2a9",
         "opacity": 1
       },
@@ -150,7 +150,7 @@
     {
       "mark": {
         "type": "circle",
-        "size": 150,
+        "size": 170,
         "color": "#1f2a30",
         "opacity": 1,
         "stroke": "#ffffff",
@@ -200,7 +200,7 @@
         "align": "center",
         "baseline": "bottom",
         "dy": -12,
-        "fontSize": 11,
+        "fontSize": 12,
         "color": "#1f2a30",
         "fontWeight": "bold"
       },
@@ -227,7 +227,7 @@
         "align": "center",
         "baseline": "bottom",
         "dy": -14,
-        "fontSize": 11,
+        "fontSize": 12,
         "color": "#52514e"
       },
       "encoding": {
@@ -251,7 +251,7 @@
         "align": "center",
         "baseline": "top",
         "dy": 14,
-        "fontSize": 11,
+        "fontSize": 12,
         "color": "#52514e"
       },
       "encoding": {
@@ -275,7 +275,7 @@
         "align": "center",
         "baseline": "top",
         "dy": 14,
-        "fontSize": 11,
+        "fontSize": 12,
         "color": "#1f2a30"
       },
       "encoding": {
@@ -297,7 +297,7 @@
       },
       "encoding": {
         "x": {
-          "value": 536
+          "value": 576
         },
         "text": {
           "field": "gap_note"

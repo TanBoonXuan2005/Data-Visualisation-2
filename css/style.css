@@ -1,6 +1,21 @@
+/* The Heritage Record
+   Page layout and chart presentation only. */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
 body {
     margin: 0;
+    background-color: #f5f2eb;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
     color: #263238;
 }
 
@@ -18,43 +33,153 @@ h2 {
 }
 
 h1 {
-    font-size: 40px;
-    margin: 0 0 12px;
+    margin: 24px 0;
+    font-size: 96px;
+    line-height: 1.02;
+    letter-spacing: -5px;
+}
+
+h1 em {
+    color: #a44932;
 }
 
 h2 {
-    font-size: 28px;
-    margin: 72px 0 8px;
+    margin: 0 0 12px;
+    font-size: 38px;
+    line-height: 1.2;
+    letter-spacing: -1px;
 }
 
-.chart-panel {
-    margin-top: 28px;
+h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.45;
 }
 
-.chart-panel > div {
-    width: 100%;
+a {
+    color: #285d65;
+    text-underline-offset: 4px;
 }
 
-.map-pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+a:hover {
+    color: #a44932;
 }
 
-.map-pair > div {
-    min-width: 0;
+a:focus-visible,
+input:focus-visible,
+button:focus-visible,
+[tabindex="0"]:focus-visible {
+    outline: 3px solid #a44932;
+    outline-offset: 5px;
 }
 
-.chart-row {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 40px;
+::selection {
+    background-color: #ead1bc;
+    color: #1f2a30;
+}
+
+.skip {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    z-index: 30;
+    padding: 12px 18px;
+    background-color: #ffffff;
+}
+
+.skip:focus {
+    top: 12px;
+}
+
+/* Masthead */
+
+.folio-head {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-top: 28px;
+    gap: 24px;
+    max-width: 1044px;
+    margin: 0 auto;
+    padding: 20px 0;
+    border-top: 5px solid #263e37;
+    border-bottom: 1px solid #cecfc4;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 1.5px;
 }
 
-.chart-row > .chart-panel {
-    margin-top: 0;
+.edition {
+    color: #263e37;
+    text-decoration: none;
+}
+
+.edition > span {
+    margin-left: 12px;
+    color: #a44932;
+}
+
+.edition-detail {
+    color: #626b63;
+    text-align: center;
+}
+
+.edition-detail span {
+    margin: 0 4px;
+}
+
+.reference-link {
+    padding: 10px 0;
+    text-decoration: none;
+}
+
+/* Opening spread */
+
+.opening {
+    padding: 28px 0 44px;
+}
+
+.opening-label,
+.section-kicker,
+.contents-index,
+.caption-label,
+.preface-label,
+.plate-num,
+.aside-title,
+.end-head > span {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 1.3px;
+    color: #a44932;
+}
+
+.opening-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.record-glyph {
+    font-size: 26px;
+    line-height: 1;
+    color: #263e37;
+}
+
+.opening-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 235px;
+    gap: 72px;
+    align-items: end;
+}
+
+.opening-sub {
+    max-width: 34ch;
+    margin: 0 0 20px;
+    font-size: 22px;
+    line-height: 1.55;
+    color: #344a43;
 }
 
 .introduction,
@@ -67,31 +192,374 @@ h2 {
 
 .introduction {
     margin: 0;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #5a655f;
+}
+
+.introduction strong {
+    font-weight: 600;
+    color: #263e37;
+}
+
+.opening-aside {
+    padding: 22px 0 0;
+    border-top: 2px solid #a44932;
+}
+
+.aside-title {
+    margin: 0 0 20px;
+    font-size: 10px;
+    color: #626b63;
+}
+
+.record-stat {
+    margin: 0;
+    padding: 14px 0 18px;
+    border-bottom: 1px solid #d9d9ce;
+}
+
+.record-stat > span {
+    display: block;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 54px;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    color: #263e37;
+}
+
+.record-stat small {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #5a655f;
+}
+
+.aside-foot {
+    margin: 18px 0 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #626b63;
+}
+
+/* Chapter navigation */
+
+.contents {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 90px repeat(4, minmax(0, 1fr));
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-top: 1px solid #263e37;
+    border-bottom: 1px solid #263e37;
+    background-color: #f5f2eb;
+}
+
+.contents-index {
+    color: #626b63;
+}
+
+.contents a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #344a43;
+    text-decoration: none;
+    transition: background-color 160ms ease;
+}
+
+.contents a b {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #a44932;
+}
+
+.contents a:hover,
+.contents a:focus-visible {
+    background-color: #e9e8dd;
+}
+
+/* Chapters */
+
+.chapter {
+    margin-top: 84px;
+}
+
+.chapter-banner {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 28px;
+    padding: 28px 0 36px;
+    border-top: 2px solid #263e37;
+}
+
+.chapter-count {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 66px;
+    line-height: 1;
+    letter-spacing: -4px;
+    color: #a44932;
+}
+
+.chapter-count span {
+    display: block;
+    margin-top: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #626b63;
+}
+
+.section-kicker {
+    margin: 0 0 14px;
+}
+
+.section-kicker span {
+    margin: 0 6px;
+    color: #a8ada2;
+}
+
+.chapter-intro {
+    max-width: 64ch;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #5a655f;
+}
+
+.chapter-preface {
+    display: grid;
+    grid-template-columns: 142px minmax(0, 1fr);
+    gap: 24px;
+    margin: 0 0 36px;
+    padding: 22px 26px;
+    border-left: 3px solid #a44932;
+    background-color: #edeae0;
+}
+
+.chapter-preface .chart-insight {
+    max-width: 72ch;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Figure plates */
+
+.figures,
+.figure-plate {
+    min-width: 0;
+}
+
+.figure-plate {
+    margin: 0 0 60px;
+}
+
+.figure-plate:last-child {
+    margin-bottom: 36px;
+}
+
+.plate-heading {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    align-items: baseline;
+    gap: 16px;
+    padding: 17px 0;
+    border-top: 1px solid #cecfc4;
+}
+
+.plate-num {
+    white-space: nowrap;
+}
+
+.plot-field {
+    width: 100%;
+    min-width: 0;
+    min-height: 180px;
+    padding: 24px;
+    overflow-x: hidden;
+    border: 1px solid #deded4;
+    background-color: #fffefa;
+    scrollbar-color: #a1ac9e #f0eee6;
+    scrollbar-width: thin;
+}
+
+.chart-fit,
+.chart-target {
+    width: 100%;
+    min-width: 0;
+}
+
+.chart-target.vega-embed,
+.chart-target .vega-embed {
+    display: block;
+    width: 100%;
+    padding: 0;
+}
+
+.chart-target svg {
+    display: block;
+    max-width: none;
+    margin: 0 auto;
+}
+
+.plot-help {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 9px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #626b63;
+}
+
+.scroll-hint {
+    display: none;
+    color: #285d65;
+}
+
+.is-scrollable + .plot-help .scroll-hint {
+    display: inline;
+}
+
+.plate-caption {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 36px;
+    padding-top: 24px;
+}
+
+.caption-label {
+    display: block;
+    margin: 0 0 10px;
+    font-size: 11px;
 }
 
 .chart-insight {
-    margin: 16px 0 0;
+    margin: 0;
+}
+
+.plate-interpret:only-child {
+    grid-column: 1 / -1;
+}
+
+.plate-interpret:only-child .chart-insight {
+    max-width: 76ch;
+}
+
+.plate-method {
+    padding-left: 24px;
+    border-left: 1px solid #d9d9ce;
+}
+
+.plate-method .caption-label {
+    color: #626b63;
 }
 
 .chart-source {
     max-width: 80ch;
-    margin: 12px 0 0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #5f6368;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #52625a;
 }
 
+.chapter-end {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-top: 1px solid #cecfc4;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #626b63;
+}
+
+.chapter-end a {
+    padding: 12px 0 12px 12px;
+    font-size: 12px;
+    letter-spacing: 0;
+    text-decoration: none;
+}
+
+/* Vega-Lite controls */
+
+.vega-bindings {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e4d9;
+}
+
+.vega-bind {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+    margin-top: 6px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #374151;
+}
+
+.vega-bind-name {
+    margin-right: 6px;
+    font-weight: bold;
+}
+
+.vega-bind label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.vega-bind input {
+    width: 16px;
+    height: 16px;
+    accent-color: #a44932;
+    cursor: pointer;
+}
+
+/* Sources */
+
 footer {
-    margin-top: 72px;
-    padding-top: 8px;
-    border-top: 1px solid #e1e0d9;
+    margin-top: 84px;
+    padding-top: 30px;
+    border-top: 3px solid #263e37;
+}
+
+.sources-footer {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 32px 48px;
 }
 
 footer h2 {
-    margin-top: 24px;
+    margin-top: 16px;
+    font-size: 34px;
+}
+
+.end-head p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #5a655f;
 }
 
 .sources {
+    margin: 0;
     padding-left: 20px;
     font-size: 14px;
     line-height: 1.6;
@@ -99,41 +567,356 @@ footer h2 {
 }
 
 .sources li {
-    margin-bottom: 8px;
+    margin-bottom: 18px;
+    padding-left: 4px;
+}
+
+.sources li::marker {
+    color: #a44932;
 }
 
 .sources a {
-    color: #1c5cab;
+    color: #285d65;
     overflow-wrap: anywhere;
 }
 
-.byline {
-    font-size: 14px;
-    color: #374151;
+.sources a:hover {
+    color: #a44932;
 }
 
-.chart-panel-visitors {
-    margin-top: 52px;
+.lastline {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 24px;
+    padding: 18px 0 0;
+    border-top: 1px solid #cecfc4;
+}
+
+.byline {
+    font-size: 12px;
+    color: #5a655f;
+}
+
+.lastline a {
+    padding: 12px 0;
+    text-decoration: none;
+}
+
+.error-note,
+.noscript-note {
+    max-width: 60ch;
+    margin: 24px auto;
+    padding: 16px;
+    border-left: 3px solid #a44932;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #5a453b;
+}
+
+.plot-field.has-error .chart-fit {
+    min-width: 0;
+}
+
+.has-error + .plot-help {
+    display: none;
+}
+
+/* Tablet and mobile */
+
+@media (max-width: 1100px) {
+    .folio-head {
+        margin: 0 28px;
+    }
+
+    .opening-grid {
+        gap: 40px;
+    }
+
+    h1 {
+        font-size: 82px;
+    }
 }
 
 @media (max-width: 900px) {
-    .map-pair,
-    .chart-row {
+    html {
+        scroll-padding-top: 32px;
+    }
+
+    .edition-detail {
+        display: none;
+    }
+
+    .opening-grid {
+        grid-template-columns: minmax(0, 1fr) 190px;
+        gap: 32px;
+    }
+
+    h1 {
+        font-size: 72px;
+        letter-spacing: -3px;
+    }
+
+    .contents {
+        position: static;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 4px;
+    }
+
+    .contents-index {
+        display: none;
+    }
+
+    .plate-caption {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .plate-method {
+        padding: 16px 0 0;
+        border-top: 1px solid #d9d9ce;
+        border-left: 0;
+    }
+
+    .chart-insight {
+        max-width: 70ch;
+    }
+
+    .chart-fit {
+        min-width: 0;
+    }
+
+    .plot-field {
+        padding: 20px 16px;
+    }
+
+    .sources-footer {
+        grid-template-columns: 200px minmax(0, 1fr);
+        column-gap: 32px;
     }
 }
-/* Radio buttons that Vega-Lite adds under a chart (e.g. the map close-up toggle) */
-.vega-bind {
-    margin-top: 6px;
-    font-size: 14px;
-    color: #374151;
+
+@media (max-width: 600px) {
+    main {
+        padding: 24px 20px;
+    }
+
+    .folio-head {
+        gap: 12px;
+        margin: 0 20px;
+        padding: 14px 0;
+        font-size: 9px;
+        letter-spacing: 0.8px;
+    }
+
+    .edition > span {
+        display: block;
+        margin-left: 0;
+    }
+
+    .opening {
+        padding: 12px 0 30px;
+    }
+
+    .opening-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    h1 {
+        margin: 22px 0;
+        font-size: 64px;
+        letter-spacing: -3px;
+    }
+
+    .opening-sub {
+        font-size: 20px;
+    }
+
+    .opening-aside {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 24px;
+        padding-top: 16px;
+    }
+
+    .aside-title {
+        grid-column: 1 / -1;
+        margin: 0;
+    }
+
+    .record-stat {
+        padding: 0 0 14px;
+    }
+
+    .record-stat > span {
+        font-size: 42px;
+    }
+
+    .record-stat small {
+        max-width: 18ch;
+    }
+
+    .aside-foot {
+        display: none;
+    }
+
+    .contents {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 8px;
+    }
+
+    .chapter {
+        margin-top: 56px;
+    }
+
+    .chapter-banner {
+        grid-template-columns: 52px minmax(0, 1fr);
+        gap: 18px;
+        padding: 24px 0 28px;
+    }
+
+    .chapter-count {
+        font-size: 42px;
+        letter-spacing: -2px;
+    }
+
+    .chapter-count span {
+        font-size: 10px;
+    }
+
+    .section-kicker {
+        margin-bottom: 12px;
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .section-kicker span {
+        margin: 0 2px;
+    }
+
+    h2 {
+        font-size: 29px;
+        letter-spacing: -0.6px;
+    }
+
+    .chapter-intro {
+        font-size: 15px;
+    }
+
+    .chapter-preface {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .figure-plate {
+        margin-bottom: 44px;
+    }
+
+    .plate-heading {
+        grid-template-columns: 62px minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .plate-heading h3 {
+        font-size: 15px;
+    }
+
+    .plate-num {
+        font-size: 10px;
+    }
+
+    .plot-help {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .chart-insight {
+        font-size: 17px;
+    }
+
+    .sources-footer {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        margin-top: 56px;
+    }
+
+    .end-head p {
+        max-width: 48ch;
+    }
+
+    .lastline {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 
-.vega-bind-name {
-    font-weight: bold;
-    margin-right: 6px;
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .contents a {
+        transition: none;
+    }
 }
 
-.vega-bind label {
-    margin-right: 12px;
+@media print {
+    body {
+        background-color: #ffffff;
+    }
+
+    main {
+        max-width: none;
+        padding: 0;
+    }
+
+    .skip,
+    .contents,
+    .plot-help,
+    .chapter-end,
+    .reference-link {
+        display: none;
+    }
+
+    .chapter-banner,
+    .plate-heading {
+        break-after: avoid;
+    }
+
+    .figure-plate {
+        break-inside: avoid;
+    }
+
+    .chart-fit {
+        min-width: 0 !important;
+    }
+
+    .chart-target svg {
+        max-width: 100%;
+        height: auto !important;
+    }
+
+    .plot-field {
+        overflow: visible;
+        print-color-adjust: exact;
+    }
+
+    .sources-footer {
+        break-before: page;
+    }
+}
+
+@media (max-width: 600px) {
+    .chart-source {
+        font-size: 13px;
+    }
+
+    .caption-label {
+        letter-spacing: 1px;
+    }
 }

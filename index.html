@@ -1,426 +1,769 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Australian Heritage Sites</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.4.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
-</head>
-
-<body>
-
-  <main>
-
-    <h1>Australian Heritage Sites</h1>
-
-    <p class="introduction">
-      Australia's heritage spans natural landscapes, historic places and
-      Indigenous culture. This visualisation examines datasets covering
-      126 National Heritage places and 21 Australian World Heritage
-      properties. Explore where they are, what makes them significant,
-      how people experience them and what threatens them.
-    </p>
-
-    <section>
-      <h2>Where is Australia's heritage?</h2>
-
-      <div class="map-pair">
-        <div>
-          <div class="chart-panel">
-            <div id="national-heritage-dot-map"></div>
-          </div>
-
-          <p class="chart-insight">
-            Historic places cluster in the south-east: 54 of the 65 shown
-            are in New South Wales, Victoria, Tasmania or the Australian
-            Capital Territory (ACT), and 23 lie within 15 km of central
-            Melbourne or Sydney. Natural places spread far more widely,
-            with only 11 of 34 in those four jurisdictions.
-          </p>
-
-          <p class="chart-source">
-            Source: Australian Government, National Heritage List
-            Spatial Database. Each point represents one listed place,
-            rather than its complete geographic boundary.
-            Six places in external territories, such as Mawson's Huts in
-            Antarctica, and Macquarie Island are not shown, so 119 of the
-            126 places appear.
-          </p>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="theme-color" content="#f5f2eb">
+        <meta name="description" content="A field journal of Australia&#x27;s National and World Heritage places: geography, significance, visitors and conservation.">
+        <title>The Heritage Record — Australia's places worth protecting</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.4.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
+    </head>
+    <body id="top">
+        <a class="skip" href="#distribution">Skip to figures</a>
+        <div class="record-wrap">
+            <header class="folio-head">
+                <a class="edition" href="#top" aria-label="Back to top">
+                    THE HERITAGE RECORD <span>AUSTRALIA</span>
+                </a>
+                <span class="edition-detail">
+                    AN INTERACTIVE FIELD JOURNAL <span aria-hidden="true">·</span> 2026
+                </span>
+                <a href="#sources" class="reference-link">REFERENCES ↗</a>
+            </header>
+            <main id="main-content" tabindex="-1">
+                <section class="opening" aria-labelledby="hero-heading">
+                    <div class="opening-label">
+                        <span class="record-glyph" aria-hidden="true">✳</span>
+                        FIELD NOTE / 001—012
+                    </div>
+                    <div class="opening-grid">
+                        <div class="opening-main">
+                            <h1 id="hero-heading">The places<br>we <em>keep.</em></h1>
+                            <p class="opening-sub">
+                                A visual record of Australian heritage — where it lies, what it means and why
+                                its future matters.
+                            </p>
+                            <p class="opening-copy introduction">
+                                Australia's heritage spans natural landscapes, historic places and Indigenous
+                                culture. This record draws on <strong>126 National Heritage places</strong> and
+                                <strong>21 Australian World Heritage properties</strong> to explore four
+                                connected questions.
+                            </p>
+                        </div>
+                        <div class="opening-aside" aria-label="About this record">
+                            <p class="aside-title">THE RECORD AT A GLANCE</p>
+                            <p class="record-stat"><span>21</span><small>World Heritage properties</small></p>
+                            <p class="record-stat"><span>126</span><small>National Heritage places</small></p>
+                            <p class="aside-foot">12 figures. Four questions.<br>One shared inheritance.</p>
+                        </div>
+                    </div>
+                </section>
+                <nav class="contents" aria-label="Explore the four chapters">
+                    <span class="contents-index">EXPLORE</span>
+                    <a href="#distribution"><b>01</b> The geography</a>
+                    <a href="#significance"><b>02</b> The significance</a>
+                    <a href="#experience"><b>03</b> The experience</a>
+                    <a href="#conservation"><b>04</b> The challenges</a>
+                </nav>
+                <noscript>
+                    <p class="noscript-note">
+                        Enable JavaScript to explore the interactive figures. All observations and source notes
+                        remain readable.
+                    </p>
+                </noscript>
+                <section class="chapter" tabindex="-1" id="distribution" aria-labelledby="chapter-1">
+                    <header class="chapter-banner">
+                        <div class="chapter-count">
+                            01
+                            <span>/ 04</span>
+                        </div>
+                        <div class="chapter-headings">
+                            <p class="section-kicker">FIELD 01 <span>—</span> SPACE &amp; DISTRIBUTION</p>
+                            <h2 id="chapter-1">Where is Australia’s heritage?</h2>
+                            <p class="chapter-intro">
+                                Begin with geography. Heritage is found across the continent, but different
+                                kinds of places tell very different spatial stories.
+                            </p>
+                        </div>
+                    </header>
+                    <div class="figures">
+                        <figure class="figure-plate figure-map" aria-label="FIG. 01: National Heritage · locations">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 01</span>
+                                <h3>National Heritage · locations</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 01: National Heritage · locations — interactive chart" aria-describedby="chart-help-01">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="national-heritage-dot-map"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-01">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        Historic places cluster in the south-east: 54 of the 65 shown are in New
+                                        South Wales, Victoria, Tasmania or the Australian Capital Territory
+                                        (ACT), and 23 lie within 15 km of central Melbourne or Sydney. Natural
+                                        places spread far more widely, with only 11 of 34 in those four
+                                        jurisdictions.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: Australian Government, National Heritage List Spatial Database.
+                                        Each point represents one listed place, rather than its complete
+                                        geographic boundary. Six places in external territories, such as
+                                        Mawson's Huts in Antarctica, and Macquarie Island are not shown, so 119
+                                        of the 126 places appear. Use the map-view controls to inspect the
+                                        South-east, Melbourne and Sydney in more detail.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate figure-map" aria-label="FIG. 02: National Heritage · density">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 02</span>
+                                <h3>National Heritage · density</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 02: National Heritage · density — interactive chart" aria-describedby="chart-help-02">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="heritage-density-map"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-02">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        Measured against land area, the ACT stands out with about 212 listed
+                                        places per 100,000 km², because four of its five places, including Old
+                                        Parliament House and the Australian War Memorial, are national
+                                        institutions in Canberra. Tasmania (19) and Victoria (13) follow;
+                                        Queensland, Western Australia and the Northern Territory each have fewer
+                                        than one.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: Australian Government, National Heritage List Spatial Database.
+                                        Density is calculated using distinct listed places per 100,000 km² of
+                                        state or territory land area.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate" aria-label="FIG. 03: Patterns by state &amp; category">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 03</span>
+                                <h3>Patterns by state &amp; category</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 03: Patterns by state &amp; category — interactive chart" aria-describedby="chart-help-03">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="state-bar-chart"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-03">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        Historic places dominate the south-east: 23 of Victoria's 30 places and
+                                        four of the ACT's five are historic. In Western Australia, Queensland
+                                        and the Northern Territory, at least three in four places are natural or
+                                        Indigenous.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Places that span more than one state or territory are counted in each,
+                                        so the columns add up to 130 rather than 126. ACT: Australian Capital
+                                        Territory; NSW: New South Wales; NT: Northern Territory; QLD:
+                                        Queensland; SA: South Australia; TAS: Tasmania; VIC: Victoria; WA:
+                                        Western Australia; Ext.: external territories.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="chapter-end">
+                        <span>END OF FIELD 01</span>
+                        <a href="#top">Back to index ↑</a>
+                    </div>
+                </section>
+                <section class="chapter" tabindex="-1" id="significance" aria-labelledby="chapter-2">
+                    <header class="chapter-banner">
+                        <div class="chapter-count">
+                            02
+                            <span>/ 04</span>
+                        </div>
+                        <div class="chapter-headings">
+                            <p class="section-kicker">FIELD 02 <span>—</span> VALUE &amp; RECOGNITION</p>
+                            <h2 id="chapter-2">What makes a place significant?</h2>
+                            <p class="chapter-intro">
+                                The UNESCO list is more than a collection of sites. Its criteria reveal how
+                                natural, cultural and mixed heritage is recognised.
+                            </p>
+                        </div>
+                    </header>
+                    <div class="figures">
+                        <figure class="figure-plate" aria-label="FIG. 04: The three World Heritage categories">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 04</span>
+                                <h3>The three World Heritage categories</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 04: The three World Heritage categories — interactive chart" aria-describedby="chart-help-04">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="world-heritage-isotype"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-04">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        More than half of Australia's World Heritage properties (12 of 21) are
+                                        listed for their natural values alone. Only five are purely cultural,
+                                        and four are recognised for both.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate figure-wide" aria-label="FIG. 05: The criteria behind every inscription">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 05</span>
+                                <h3>The criteria behind every inscription</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 05: The criteria behind every inscription — interactive chart" aria-describedby="chart-help-05">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="unesco-criteria-matrix"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-05">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        Earth's history (criterion viii) is the most common reason for listing,
+                                        applying to 12 of the 21 properties. No cultural criterion applies to
+                                        more than four.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Criteria i to vi are cultural: human creativity, exchange of ideas,
+                                        cultural traditions, buildings and landscapes, traditional land use, and
+                                        links to beliefs or events. Criteria vii to x are natural: exceptional
+                                        beauty, Earth's history, living ecosystems and biodiversity.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate" aria-label="FIG. 06: The story of recognition over time">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 06</span>
+                                <h3>The story of recognition over time</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 06: The story of recognition over time — interactive chart" aria-describedby="chart-help-06">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="world-heritage-event-timeline"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-06">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        From 1981 to 2003, every Australian World Heritage property was natural
+                                        or mixed. Five of the six inscribed since 2004 are cultural, including
+                                        two Aboriginal cultural landscapes, Budj Bim (2019) and Murujuga (2025).
+                                        Recognition can also change after inscription: Kakadu was extended in
+                                        1987 and 1992, the Tasmanian Wilderness in 1989 and the Gondwana
+                                        Rainforests in 1994, and Uluṟu-Kata Tjuṯa was recognised for its
+                                        cultural values in 1994.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: UNESCO World Heritage Centre. Diamonds show the significant
+                                        boundary modifications recorded by UNESCO; minor boundary changes are
+                                        not shown.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="chapter-end">
+                        <span>END OF FIELD 02</span>
+                        <a href="#top">Back to index ↑</a>
+                    </div>
+                </section>
+                <section class="chapter" tabindex="-1" id="experience" aria-labelledby="chapter-3">
+                    <header class="chapter-banner">
+                        <div class="chapter-count">
+                            03
+                            <span>/ 04</span>
+                        </div>
+                        <div class="chapter-headings">
+                            <p class="section-kicker">FIELD 03 <span>—</span> SCALE &amp; EXPERIENCE</p>
+                            <h2 id="chapter-3">How do people experience it?</h2>
+                            <p class="chapter-intro">
+                                Landscapes can be vast, yet the experiences visitors take away are measured on a
+                                very different scale.
+                            </p>
+                        </div>
+                    </header>
+                    <div class="figures">
+                        <figure class="figure-plate" aria-label="FIG. 07: A continent of different scales">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 07</span>
+                                <h3>A continent of different scales</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 07: A continent of different scales — interactive chart" aria-describedby="chart-help-07">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="world-heritage-symbol-map"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-07">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        The Great Barrier Reef covers 34.9 million hectares, about three times
+                                        the other 20 properties combined. The Sydney Opera House, at 5.8
+                                        hectares, is the smallest.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: UNESCO World Heritage Centre. Markers represent UNESCO reference
+                                        coordinates and listed area. Heard and McDonald Islands and Macquarie
+                                        Island are omitted from this mainland-focused view.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate" aria-label="FIG. 08: A changing visitor story">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 08</span>
+                                <h3>A changing visitor story</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 08: A changing visitor story — interactive chart" aria-describedby="chart-help-08">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="kakadu-uluru-visitors-line"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-08">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        The parks followed different recovery paths. In 2020–21, Kakadu rose to
+                                        173,584 visitors while Uluṟu fell to 122,523. Since 2022–23, Uluṟu is up
+                                        11% and Kakadu down 8%. By 2024–25, Uluṟu had reached 267,363 visitors,
+                                        still below its 2018–19 figure of 395,338, which was itself up 20% on
+                                        the year before.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: Director of National Parks annual reports and DCCEEW FOI 80520.
+                                        Data extracted and standardised by the author. Financial years run from
+                                        July to June. Visitor-counting methods differ between the two parks, so
+                                        comparisons focus on trends within each park.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="chapter-end">
+                        <span>END OF FIELD 03</span>
+                        <a href="#top">Back to index ↑</a>
+                    </div>
+                </section>
+                <section class="chapter" tabindex="-1" id="conservation" aria-labelledby="chapter-4">
+                    <header class="chapter-banner">
+                        <div class="chapter-count">
+                            04
+                            <span>/ 04</span>
+                        </div>
+                        <div class="chapter-headings">
+                            <p class="section-kicker">FIELD 04 <span>—</span> PRESSURES &amp; CHANGE</p>
+                            <h2 id="chapter-4">What threatens these places?</h2>
+                            <p class="chapter-intro">
+                                The conservation record adds another dimension: what gets reported, how concerns
+                                change and what recent reef surveys reveal.
+                            </p>
+                        </div>
+                    </header>
+                    <aside class="chapter-preface">
+                        <span class="preface-label">READER’S NOTE</span>
+                        <p class="chart-insight">
+                            When a World Heritage property is under threat, UNESCO asks the government for a
+                            State of Conservation report. Since 1983 it has reviewed 14 of Australia's 21
+                            properties in 88 reports. All 14 are natural or mixed properties; none of the five
+                            purely cultural properties appears in this report dataset.
+                        </p>
+                    </aside>
+                    <div class="figures">
+                        <figure class="figure-plate figure-wide" aria-label="FIG. 09: Conservation reports · relationships">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 09</span>
+                                <h3>Conservation reports · relationships</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 09: Conservation reports · relationships — interactive chart" aria-describedby="chart-help-09">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="soc-threat-sankey"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-09">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        Management problems, such as missing plans or funding, were raised for
+                                        10 properties, and mining or other extraction for seven, from Kakadu to
+                                        the Blue Mountains. Climate change appears for only two, and 11 of its
+                                        13 reports concern the Great Barrier Reef.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: UNESCO World Heritage Centre, State of Conservation reports for
+                                        Australia, 1983 to 2026. Threats are the "factors affecting the
+                                        property" UNESCO lists in each report, grouped into its categories with
+                                        simplified names. The 1997 report on Uluṟu-Kata Tjuṯa recorded no
+                                        specific threat.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate" aria-label="FIG. 10: Conservation reports · change over time">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 10</span>
+                                <h3>Conservation reports · change over time</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 10: Conservation reports · change over time — interactive chart" aria-describedby="chart-help-10">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="soc-threat-heatmap"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-10">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        In the 1990s and 2000s, more than half of all reports raised management
+                                        problems. In the 2020s that fell to one report in 12, while transport
+                                        and energy infrastructure (8 of 12 reports each), climate change and
+                                        bushfires (5 of 12 each) took over.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate figure-wide" aria-label="FIG. 11: Conservation reports · hierarchy &amp; frequency">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 11</span>
+                                <h3>Conservation reports · hierarchy &amp; frequency</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 11: Conservation reports · hierarchy &amp; frequency — interactive chart" aria-describedby="chart-help-11">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="soc-threat-treemap"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-11">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        Mining and management plans are the threats UNESCO has listed most
+                                        often: 70 times between them, all but five before 2020. Since 2020, 45
+                                        of the 64 threats listed concern the Great Barrier Reef: its water
+                                        quality, shipping, non-renewable energy facilities and four kinds of
+                                        climate impact. Most of the others are in the Blue Mountains: mining,
+                                        water infrastructure, air transport and bushfires.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                        <figure class="figure-plate" aria-label="FIG. 12: Great Barrier Reef · a closer look">
+                            <div class="plate-heading">
+                                <span class="plate-num">FIG. 12</span>
+                                <h3>Great Barrier Reef · a closer look</h3>
+                            </div>
+                            <div class="plot-field" tabindex="0" role="region" aria-label="FIG. 12: Great Barrier Reef · a closer look — interactive chart" aria-describedby="chart-help-12">
+                                <div class="chart-fit">
+                                    <div class="chart-target" id="gbr-coral-cover"></div>
+                                </div>
+                            </div>
+                            <p class="plot-help" id="chart-help-12">
+                                <span>Hover or tap the chart to explore.</span><span class="scroll-hint">Scroll
+                                sideways for the full figure →</span>
+                            </p>
+                            <figcaption class="plate-caption">
+                                <div class="plate-interpret">
+                                    <span class="caption-label">OBSERVATION</span>
+                                    <p class="chart-insight">
+                                        The reef's latest survey brings some good news. Coral cover in the
+                                        northern and central reef is above its long-term average, and the north
+                                        is starting to recover from the 2024 mass bleaching. In the south, cover
+                                        is 26.4%, 2.9 percentage points below its average.
+                                    </p>
+                                </div>
+                                <div class="plate-method">
+                                    <span class="caption-label">SOURCE / METHOD</span>
+                                    <p class="chart-source">
+                                        Source: Australian Institute of Marine Science (AIMS), Annual Summary
+                                        Report of Coral Reef Condition 2025/26; 121 reefs surveyed between
+                                        August 2025 and June 2026. Hard coral cover is the share of the seabed
+                                        covered by living hard coral. Because only a sample of reefs is
+                                        surveyed, each figure is an estimate; the survey ranges shown on hover
+                                        are AIMS's margins of error.
+                                    </p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="chapter-end">
+                        <span>END OF FIELD 04</span>
+                        <a href="#top">Back to index ↑</a>
+                    </div>
+                </section>
+                <footer class="sources-footer" id="sources">
+                    <div class="end-head">
+                        <span>APPENDIX / 2026</span>
+                        <h2>Sources &amp; field notes.</h2>
+                        <p>
+                            Official public records and scientific reports used for this visualisation. Full
+                            data sources are linked below.
+                        </p>
+                    </div>
+                    <ul class="sources">
+                        <li>
+                            National Heritage places: Australian Government, National Heritage List Spatial
+                            Database (NHL), public release. <a
+                            href="https://fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public/about">
+                            fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public
+                            </a>
+                        </li>
+                        <li>
+                            World Heritage properties: UNESCO World Heritage Centre, Australia. <a
+                            href="https://whc.unesco.org/en/statesparties/au">
+                            whc.unesco.org/en/statesparties/au </a>
+                        </li>
+                        <li>
+                            State and territory boundaries: Australian Bureau of Statistics, ASGS Edition 4
+                            digital boundary files. <a
+                            href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/digital-boundary-files">
+                            abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031
+                            </a>
+                        </li>
+                        <li>
+                            National park visitor data: Director of National Parks Annual Reports <a
+                            href="https://www.dcceew.gov.au/parks-heritage/national-parks/parks-australia/publications/annual-report-2018-19-director-national-parks">2018–19</a>,
+                            <a
+                            href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2020-21.pdf">2020–21</a>,
+                            <a
+                            href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2022-23.pdf">2022–23</a>,
+                            <a
+                            href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2023-24.pdf">2023–24</a>
+                            and <a
+                            href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2024-25.pdf">2024–25</a>.
+                            <a href="https://www.dcceew.gov.au/sites/default/files/documents/80520.pdf">DCCEEW
+                            FOI 80520</a>. Uluṟu's 20% rise in 2018–19, as stated by Parks Australia: <a
+                            href="https://www.thenewdaily.com.au/news/state/nt/2019/07/16/uluru-closure-visitor-numbers">The
+                            New Daily, 16 July 2019</a>. Events: <a
+                            href="https://parksaustralia.gov.au/news/parks-australia-announces-temporary-closures/">Parks
+                            Australia temporary closures (March 2020)</a>, <a
+                            href="https://uluru.gov.au/discover/history/uluru-climb-closure/">Uluṟu climb
+                            closure</a> and <a
+                            href="https://uluru.gov.au/news/staged-re-opening-uluru-kata-tjuta-national-park/">2020
+                            park reopening</a>.
+                        </li>
+                        <li>
+                            Threats to World Heritage properties: UNESCO World Heritage Centre, State of
+                            Conservation Information System. <a
+                            href="https://whc.unesco.org/en/soc/">whc.unesco.org/en/soc</a>
+                        </li>
+                        <li>
+                            Coral cover: Australian Institute of Marine Science, Annual Summary Report of Coral
+                            Reef Condition 2025/26. <a
+                            href="https://aims.gov.au/monitoring-great-barrier-reef/gbr-condition-summary-2025-26">aims.gov.au/monitoring-great-barrier-reef/gbr-condition-summary-2025-26</a>
+                        </li>
+                    </ul>
+                    <div class="lastline byline">
+                        <span>THE HERITAGE RECORD — AUSTRALIA</span>
+                        <span>Created by Tan Boon Xuan · October 2026</span>
+                        <a href="#top">↑ TOP</a>
+                    </div>
+                </footer>
+            </main>
         </div>
+        <script>
+            // Chart files and datasets are unchanged. This code handles presentation only.
+            const figures = [
+                ["national-heritage-dot-map", "chart01_national_heritage_dot_map.vg.json"],
+                ["heritage-density-map", "chart02_heritage_density_choropleth.vg.json"],
+                ["state-bar-chart", "chart03_state_marimekko.vg.json"],
+                ["world-heritage-isotype", "chart04_world_heritage_isotype.vg.json"],
+                ["unesco-criteria-matrix", "chart05_unesco_criteria_matrix.vg.json"],
+                ["world-heritage-event-timeline", "chart06_world_heritage_event_timeline.vg.json"],
+                ["world-heritage-symbol-map", "chart07_world_heritage_symbol_map.vg.json"],
+                ["kakadu-uluru-visitors-line", "chart08_kakadu_uluru_visitors_line.vg.json"],
+                ["soc-threat-sankey", "chart09_soc_threat_sankey.vg.json"],
+                ["soc-threat-heatmap", "chart10_soc_heatmap.vg.json"],
+                ["soc-threat-treemap", "chart11_soc_threat_treemap.vg.json"],
+                ["gbr-coral-cover", "chart12_gbr_coral_dumbbell.vg.json"]
+            ];
 
-        <div>
-          <div class="chart-panel">
-            <div id="heritage-density-map"></div>
-          </div>
+            // Fit the SVG on desktop. Keep its native size on narrow screens so labels
+            // remain readable. Radio controls are never scaled with the graphic.
+            function fitFigure(target) {
+                const plot = target.closest(".plot-field");
+                const fit = target.closest(".chart-fit");
+                const svg = target.querySelector("svg");
 
-          <p class="chart-insight">
-            Measured against land area, the ACT stands out with about 212
-            listed places per 100,000 km², because four of its five places,
-            including Old Parliament House and the Australian War Memorial,
-            are national institutions in Canberra. Tasmania (19) and
-            Victoria (13) follow; Queensland, Western Australia and the
-            Northern Territory each have fewer than one.
-          </p>
+                if (!plot || !fit || !svg) {
+                    return;
+                }
 
-          <p class="chart-source">
-            Source: Australian Government, National Heritage List
-            Spatial Database. Density is calculated using distinct
-            listed places per 100,000 km² of state or territory
-            land area.
-          </p>
-        </div>
-      </div>
-      
-      <div class="chart-row">
-        <div class="chart-panel">
-          <div id="state-bar-chart"></div>
-        </div>
+                const width = parseFloat(svg.getAttribute("width"));
+                const height = parseFloat(svg.getAttribute("height"));
 
-        <div>
-          <p class="chart-insight">
-            Historic places dominate the south-east: 23 of Victoria's 30
-            places and four of the ACT's five are historic. In Western
-            Australia, Queensland and the Northern Territory, at least
-            three in four places are natural or Indigenous.
-          </p>
+                if (!(width > 0) || !(height > 0)) {
+                    return;
+                }
 
-          <p class="chart-source">
-            Places that span more than one state or territory are counted
-            in each, so the columns add up to 130 rather than 126.
-            ACT: Australian Capital Territory; NSW: New South Wales;
-            NT: Northern Territory; QLD: Queensland; SA: South Australia;
-            TAS: Tasmania; VIC: Victoria; WA: Western Australia;
-            Ext.: external territories.
-          </p>
-        </div>
-      </div>
+                const style = getComputedStyle(plot);
+                const available = Math.max(1, plot.clientWidth
+                    - parseFloat(style.paddingLeft)
+                    - parseFloat(style.paddingRight));
+                const scale = Math.min(1, available / width);
 
-    </section>
+                svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+                svg.style.width = `${width * scale}px`;
+                svg.style.height = `${height * scale}px`;
+                fit.style.minWidth = "0";
 
-    <section class="heritage-story">
-      <h2>What makes these places significant?</h2>
-      <div class="chart-row">
-        <div class="chart-panel">
-          <div id="world-heritage-isotype"></div>
-        </div>
+                const scrollable = plot.scrollWidth > plot.clientWidth + 2;
+                plot.classList.toggle("is-scrollable", scrollable);
+                plot.tabIndex = scrollable ? 0 : -1;
+            }
 
-        <p class="chart-insight">
-          More than half of Australia's World Heritage properties (12 of 21)
-          are listed for their natural values alone. Only five are purely
-          cultural, and four are recognised for both.
-        </p>
-      </div>
+            function showChartError(target, error) {
+                console.error("Figure failed:", target.id, error);
+                const plot = target.closest(".plot-field");
+                const message = document.createElement("p");
+                message.className = "error-note";
+                message.setAttribute("role", "status");
+                message.textContent = "This figure could not be loaded. You can continue reading the observation and source notes below.";
+                target.replaceChildren(message);
+                plot.classList.add("has-error");
+                plot.removeAttribute("aria-busy");
+                plot.tabIndex = -1;
+            }
 
-      <div class="chart-panel">
-        <div id="unesco-criteria-matrix"></div>
-      </div>
+            const tasks = figures.map(async ([id, file]) => {
+                const target = document.getElementById(id);
+                const plot = target.closest(".plot-field");
+                plot.setAttribute("aria-busy", "true");
 
-      <p class="chart-insight">
-        Earth's history (criterion viii) is the most common reason for
-        listing, applying to 12 of the 21 properties. No cultural criterion
-        applies to more than four.
-      </p>
+                try {
+                    const response = await fetch(`js/${file}`);
 
-      <p class="chart-source">
-        Criteria i to vi are cultural: human creativity, exchange of ideas,
-        cultural traditions, buildings and landscapes, traditional land use,
-        and links to beliefs or events. Criteria vii to x are natural:
-        exceptional beauty, Earth's history, living ecosystems and
-        biodiversity.
-      </p>
+                    if (!response.ok) {
+                        throw new Error(`Cannot fetch ${file}`);
+                    }
 
-      <div class="chart-panel">
-        <div id="world-heritage-event-timeline"></div>
-      </div>
+                    const spec = await response.json();
 
-      <p class="chart-insight">
-        From 1981 to 2003, every Australian World Heritage property was
-        natural or mixed. Five of the six inscribed since 2004 are cultural,
-        including two Aboriginal cultural landscapes, Budj Bim (2019) and
-        Murujuga (2025). Recognition can also change after inscription:
-        Kakadu was extended in 1987 and 1992, the Tasmanian Wilderness
-        in 1989 and the Gondwana Rainforests in 1994, and Uluṟu-Kata
-        Tjuṯa was recognised for its cultural values in 1994.
-      </p>
+                    // Keep the existing v4 Sankey presentation settings.
+                    if (id === "soc-threat-sankey") {
+                        spec.width = Math.max(275, Math.min(720, Math.round(plot.clientWidth - 420)));
+                        spec.height = 560;
+                        spec.title.subtitleFontSize = 13;
 
-      <p class="chart-source">
-        Source: UNESCO World Heritage Centre.
-        Diamonds show the significant boundary modifications recorded
-        by UNESCO; minor boundary changes are not shown.
-      </p>
-    </section>
+                        for (const mark of spec.marks || []) {
+                            if (["source_labels", "target_labels"].includes(mark.name)) {
+                                mark.encode.update.fontSize.value = 13;
+                            }
+                        }
+                    }
 
-    <section>
-      <h2>How do people experience Australia's World Heritage?</h2>
+                    const result = await vegaEmbed(target, spec, {
+                        actions: false,
+                        renderer: "svg"
+                    });
 
-      <div class="chart-panel">
-        <div id="world-heritage-symbol-map"></div>
-      </div>
+                    plot.removeAttribute("aria-busy");
+                    fitFigure(target);
+                    return result;
+                } catch (error) {
+                    showChartError(target, error);
+                    return null;
+                }
+            });
 
-      <p class="chart-insight">
-        The Great Barrier Reef covers 34.9 million hectares, about three
-        times the other 20 properties combined. The Sydney Opera House,
-        at 5.8 hectares, is the smallest.
-      </p>
+            window.__heritageChartsReady = Promise.all(tasks);
 
-      <p class="chart-source">
-        Source: UNESCO World Heritage Centre.
-        Markers represent UNESCO reference coordinates and listed area.
-        Heard and McDonald Islands and Macquarie Island are
-        omitted from this mainland-focused view.
-      </p>
+            function fitAllFigures() {
+                figures.forEach(([id]) => fitFigure(document.getElementById(id)));
+            }
 
-      <p class="chart-insight">
-        Parks Australia reports yearly visitor numbers for two of the
-        labelled parks, Kakadu and Uluṟu-Kata Tjuṯa.
-      </p>
+            let pendingResize = false;
 
-      <div class="chart-panel chart-panel-visitors">
-        <div id="kakadu-uluru-visitors-line"></div>
-      </div>
+            window.addEventListener("resize", () => {
+                if (pendingResize) {
+                    return;
+                }
 
-      <p class="chart-insight">
-        The parks followed different recovery paths. In 2020–21,
-        Kakadu rose to 173,584 visitors while Uluṟu fell to 122,523.
-        Since 2022–23, Uluṟu is up 11% and Kakadu down 8%. By 2024–25,
-        Uluṟu had reached 267,363 visitors, still below its 2018–19
-        figure of 395,338, which was itself up 20% on the year before.
-      </p>
+                pendingResize = true;
+                requestAnimationFrame(() => {
+                    fitAllFigures();
+                    pendingResize = false;
+                });
+            }, { passive: true });
 
-      <p class="chart-source">
-        Source: Director of National Parks annual reports and
-        DCCEEW FOI 80520. Data extracted and standardised by
-        the author. Financial years run from July to June.
-        Visitor-counting methods differ between the two parks,
-        so comparisons focus on trends within each park.
-      </p>
-    </section>
-
-    <section>
-      <h2>What threatens Australia's World Heritage?</h2>
-
-      <p class="chart-insight">
-        When a World Heritage property is under threat, UNESCO asks the
-        government for a State of Conservation report. Since 1983 it has
-        reviewed 14 of Australia's 21 properties in 88 reports. All 14 are
-        natural or mixed properties; none of the five purely cultural
-        properties has been reviewed.
-      </p>
-
-      <div class="chart-panel">
-        <div id="soc-threat-sankey"></div>
-      </div>
-
-      <p class="chart-insight">
-        Management problems, such as missing plans or funding, were raised
-        for 10 properties, and mining or other extraction for seven, from
-        Kakadu to the Blue Mountains. Climate change appears for only two,
-        and 11 of its 13 reports concern the Great Barrier Reef.
-      </p>
-
-      <p class="chart-source">
-        Source: UNESCO World Heritage Centre, State of Conservation reports
-        for Australia, 1983 to 2026. Threats are the "factors affecting the
-        property" UNESCO lists in each report, grouped into its categories
-        with simplified names. The 1997 report on Uluṟu-Kata Tjuṯa recorded
-        no specific threat.
-      </p>
-
-      <div class="chart-panel">
-        <div id="soc-threat-heatmap"></div>
-      </div>
-
-      <p class="chart-insight">
-        In the 1990s and 2000s, more than half of all reports raised
-        management problems. In the 2020s that fell to one report in 12,
-        while transport and energy infrastructure (8 of 12 reports each),
-        climate change and bushfires (5 of 12 each) took over.
-      </p>
-
-      <div class="chart-panel">
-        <div id="soc-threat-treemap"></div>
-      </div>
-
-      <p class="chart-insight">
-        Counted by how often UNESCO has listed them, climate threats come
-        first (46 listings), but 44 of those are for the Great Barrier Reef.
-        Mining, listed 36 times, is the most frequent single threat.
-        Seventeen of the 35 types of threat were still being listed in
-        reports from 2020 onwards.
-      </p>
-
-      <div class="chart-panel">
-        <div id="gbr-coral-cover"></div>
-      </div>
-
-      <p class="chart-insight">
-        The reef's latest survey brings some good news. Coral cover in the
-        northern and central reef is above its long-term average, and the
-        north is starting to recover from the 2024 mass bleaching. In the
-        south, cover is 26.4%, 2.9 percentage points below its average.
-      </p>
-
-      <p class="chart-source">
-        Source: Australian Institute of Marine Science (AIMS), Annual
-        Summary Report of Coral Reef Condition 2025/26; 121 reefs surveyed
-        between August 2025 and June 2026. Hard coral cover is the share of
-        the seabed covered by living hard coral. Because only a sample of
-        reefs is surveyed, each figure is an estimate; the survey ranges
-        shown on hover are AIMS's margins of error.
-      </p>
-    </section>
-
-  <footer>
-    <h2>Sources</h2>
-
-    <ul class="sources">
-      <li>
-        National Heritage places: Australian Government, National Heritage
-        List Spatial Database (NHL), public release.
-        <a href="https://fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public/about">
-          fed.dcceew.gov.au/datasets/erin::national-heritage-list-spatial-database-nhl-public
-        </a>
-      </li>
-
-      <li>
-        World Heritage properties: UNESCO World Heritage Centre, Australia.
-        <a href="https://whc.unesco.org/en/statesparties/au">
-          whc.unesco.org/en/statesparties/au
-        </a>
-      </li>
-
-      <li>
-        State and territory boundaries: Australian Bureau of Statistics,
-        ASGS Edition 4 digital boundary files.
-        <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/digital-boundary-files">
-          abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031
-        </a>
-      </li>
-
-      <li>
-        National park visitor data:
-        Director of National Parks Annual Reports
-        <a href="https://www.dcceew.gov.au/parks-heritage/national-parks/parks-australia/publications/annual-report-2018-19-director-national-parks">2018–19</a>,
-        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2020-21.pdf">2020–21</a>,
-        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2022-23.pdf">2022–23</a>,
-        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2023-24.pdf">2023–24</a> and
-        <a href="https://www.dcceew.gov.au/sites/default/files/documents/dnp-annual-report-2024-25.pdf">2024–25</a>.
-        <a href="https://www.dcceew.gov.au/sites/default/files/documents/80520.pdf">DCCEEW FOI 80520</a>.
-        Uluṟu's 20% rise in 2018–19, as stated by Parks Australia:
-        <a href="https://www.thenewdaily.com.au/news/state/nt/2019/07/16/uluru-closure-visitor-numbers">The New Daily, 16 July 2019</a>.
-        Events:
-        <a href="https://parksaustralia.gov.au/news/parks-australia-announces-temporary-closures/">Parks Australia temporary closures (March 2020)</a>,
-        <a href="https://uluru.gov.au/discover/history/uluru-climb-closure/">Uluṟu climb closure</a> and
-        <a href="https://uluru.gov.au/news/staged-re-opening-uluru-kata-tjuta-national-park/">2020 park reopening</a>.
-      </li>
-      <li>
-        Threats to World Heritage properties: UNESCO World Heritage Centre,
-        State of Conservation Information System.
-        <a href="https://whc.unesco.org/en/soc/">whc.unesco.org/en/soc</a>
-      </li>
-
-      <li>
-        Coral cover: Australian Institute of Marine Science, Annual Summary
-        Report of Coral Reef Condition 2025/26.
-        <a href="https://aims.gov.au/monitoring-great-barrier-reef/gbr-condition-summary-2025-26">aims.gov.au/monitoring-great-barrier-reef/gbr-condition-summary-2025-26</a>
-      </li>
-    </ul>
-
-    <p class="byline">Created by Tan Boon Xuan, October 2026.</p>
-  </footer>
-
-  </main>
-
-  <script>
-    vegaEmbed(
-      "#national-heritage-dot-map",
-      "js/chart01_national_heritage_dot_map.vg.json",
-      {
-        actions: false
-      }
-    );
-
-    vegaEmbed(
-      "#heritage-density-map",
-      "js/chart02_heritage_density_choropleth.vg.json",
-      {
-        actions: false
-      }
-    );
-
-    vegaEmbed(
-      "#state-bar-chart",
-      "js/chart03_state_marimekko.vg.json",
-      {
-        actions: false
-      }
-    );
-
-    vegaEmbed(
-      "#world-heritage-isotype",
-      "js/chart04_world_heritage_isotype.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#unesco-criteria-matrix",
-      "js/chart05_unesco_criteria_matrix.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#world-heritage-event-timeline",
-      "js/chart06_world_heritage_event_timeline.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#world-heritage-symbol-map",
-      "js/chart07_world_heritage_symbol_map.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#kakadu-uluru-visitors-line",
-      "js/chart08_kakadu_uluru_visitors_line.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#soc-threat-sankey",
-      "js/chart09_soc_threat_sankey.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#soc-threat-heatmap",
-      "js/chart10_soc_heatmap.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#soc-threat-treemap",
-      "js/chart11_soc_threat_treemap.vg.json",
-      { actions: false }
-    );
-
-    vegaEmbed(
-      "#gbr-coral-cover",
-      "js/chart12_gbr_coral_dumbbell.vg.json",
-      { actions: false }
-    );
-  </script>
-
-</body> 
-
+            if (document.fonts) {
+                document.fonts.ready.then(fitAllFigures);
+            }
+        </script>
+    </body>
 </html>
