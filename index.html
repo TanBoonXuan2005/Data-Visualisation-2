@@ -653,8 +653,8 @@
                 ["gbr-coral-cover", "chart12_gbr_coral_dumbbell.vg.json"]
             ];
 
-            // Fit the SVG on desktop. Keep its native size on narrow screens so labels
-            // remain readable. Radio controls are never scaled with the graphic.
+            // Fit SVG charts to the available plot width on all screen sizes.
+            // Keep interactive controls outside the scaled SVG.
             function fitFigure(target) {
                 const plot = target.closest(".plot-field");
                 const fit = target.closest(".chart-fit");
