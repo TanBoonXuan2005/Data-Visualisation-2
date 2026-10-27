@@ -252,7 +252,9 @@
         "fontSize": 11,
         "lineHeight": 14,
         "color": "#374151",
-        "y": 2
+        "y": {
+          "expr": "height - 34"
+        }
       },
       "encoding": {
         "x": {

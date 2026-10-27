@@ -4,7 +4,7 @@
     "text": "Coral cover is above average in the northern and central reef, but below it in the south",
     "subtitle": [
       "Average hard coral cover on Great Barrier Reef reefs surveyed by AIMS (Aug 2025 to Jun 2026),",
-      "compared with 2025 and with each region's long-term average. Hover for the survey ranges."
+      "compared with 2024/25 and with each region's long-term average. Hover for the survey ranges."
     ]
   },
   "width": 560,
@@ -141,7 +141,7 @@
           },
           {
             "field": "cover_2025",
-            "title": "2025 cover (%)",
+            "title": "2024/25 cover (%)",
             "format": ".1f"
           }
         ]
@@ -183,7 +183,7 @@
           },
           {
             "field": "cover_2025",
-            "title": "2025 cover (%)",
+            "title": "2024/25 cover (%)",
             "format": ".1f"
           },
           {
@@ -260,7 +260,7 @@
           "type": "quantitative"
         },
         "text": {
-          "value": "2025"
+          "value": "2024/25"
         }
       }
     },
